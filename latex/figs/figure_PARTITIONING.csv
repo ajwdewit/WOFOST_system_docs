@@ -1,0 +1,7 @@
+# Data points for generating the partitioning function in the WOFOST manual.,,,
+DVS,Storage Organs (FOTB),Stems (FSTB),Leaves (FLTB)
+0,0,0.2,0.8
+1,0,0.2,0.8
+1.27,0.75,0.25,0
+1.36,1,0,0
+2,1,0,0

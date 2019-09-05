@@ -1,0 +1,146 @@
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[USenglish]{babel}
+\usepackage{amsmath}
+%\usepackage[abbr]{harvard}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage[hang,small,it]{caption}
+\usepackage{mathdesign}
+\usepackage{ctable}
+\usepackage{rotating}
+\usepackage{booktabs}
+
+%\ShowDisplacementBoxes
+
+%=======================================================================
+% GENERAL SETTINGS
+%=======================================================================
+\oddsidemargin 40pt
+\evensidemargin 40pt
+\setlength{\captionmargin}{10pt}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0em}
+\providecommand{\degrees}{{\char'027}}
+\newcommand{\FigDir}{D:/UserData/sources/WOFOST_system_docs/latex/figs}
+
+%=======================================================================
+% A BIT MORE COMPACT ITEM LIST
+%=======================================================================
+\newenvironment{itemize*}%
+{\begin{itemize}%
+        \setlength{\parskip}{0pt}%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\parsep}{0pt}}%
+    {\end{itemize}}
+
+%more compact enumeration list
+\newenvironment{enumerate*}%
+{\begin{enumerate}%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\parskip}{0pt}}%
+    {\end{enumerate}}
+
+%=======================================================================
+% A BIT MORE COMPACT DESCRIPTION LIST
+%=======================================================================
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textrm{#1}}
+
+\newenvironment{description*}%
+{\begin{description}%
+        \setlength{\itemsep}{0pt}%
+        \setlength{\parskip}{0pt}}%
+    {\end{description}}
+
+%=======================================================================
+% DEFINITION OF THE FANCY HEADERS
+%=======================================================================
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhf{}
+%\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+%\fancyhead[RE]{\bfseries\leftmark}
+\headheight 15pt
+
+\fancypagestyle{plain}{%
+    \fancyhead{} % get rid of headers
+    \renewcommand{\headrulewidth}{0pt} % and the line
+}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%=======================================================================
+% MIXED EQUATION NUMBERS
+% This is to allow mixed equation number, see also:
+% http://tex.stackexchange.com/questions/34566/mixed-subequation-numbering-within-an-array#34568
+%=======================================================================
+\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+\AtBeginEnvironment{align}{\setcounter{subeqn}{0}}% Reset subequation number at start of align
+\newcounter{subeqn} \renewcommand{\thesubeqn}{\theequation\alph{subeqn}}%
+\newcommand{\subeqn}{%
+  \refstepcounter{subeqn}% Step subequation number
+  \tag{\thesubeqn}% Label equation
+}  
+
+% PDF formatting
+\usepackage[pdftitle={System description of the WOFOST 7.1 crop simulation model },pdfpagemode=UseOutlines, pdfauthor={Allard de Wit}, pdfpagetransition=Dissolve, bookmarks=true]{hyperref}
+
+
+\begin{document}
+
+\frontmatter
+\begin{titlepage}
+	\centering
+	\vfill
+	{\bfseries
+		{\LARGE
+		System description of the WOFOST 7.1 cropping system model}\\
+		\vskip1cm
+		{\large
+			Wageningen Environmental Research\\ 
+   	        \vskip0.5cm
+			September 2019}\\
+		\vskip1cm
+
+		\begin{figure}[h]
+		\includegraphics[width=\textwidth]{\FigDir/WOFOST_logo_kleur_CMYK.pdf}
+	    \end{figure}
+		\vskip1cm
+
+		{\large .... (editors)}\\
+		\vskip1cm
+     }
+     {\small 
+	This manual is an updated version of:\\
+    Supit, I., A. A. Hooijer, and C. A. Van Diepen. 
+	\textit{System description of the WOFOST 6.0 crop simulation model implemented in CGMS, vol. 1: 
+    Theory and Algorithms.} Joint Research Centre, Commission of the European Communities, EUR 15956 
+             (1994): 146.
+    }
+\end{titlepage}
+\tableofcontents
+\listoffigures
+\listoftables
+\cleardoublepage
+
+\mainmatter
+\include{introduction}
+\include{ancillary}
+\include{growth_development}
+\include{soil_modules}
+\include{references}
+%\include{chapter3}
+%\include{chapter4}
+%\include{chapter5}
+%\include{chapter6}
+
+\backmatter
+\appendix
+\include{appendix1}
+\include{appendix2}
+\include{appendix3}
+
+\end{document}

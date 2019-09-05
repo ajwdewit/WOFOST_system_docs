@@ -240,3 +240,9 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+#texMaker session file
+*.txss
+
+# sphinx build files
+doc/_build

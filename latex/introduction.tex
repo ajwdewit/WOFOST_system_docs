@@ -1,0 +1,115 @@
+
+\chapter{Introduction} 
+
+\section{About WOFOST}
+
+WOFOST is the acronym for WOrld FOod STudies. It is the name of a model for
+simulating the growth of crops. WOFOST has been developed by
+Wageningen Research and Wageningen University (and its predecessors) already
+since the 1980-ies. The model is maintained and improved by Wageningen 
+Research in cooperation with the Joint Research Centre of the European 
+Commission. Several implementation of the model are available which have been
+developed for both research and operational applications.
+
+for a generic introduction and overview to the WOFOST model see:\\
+Wit, Allard de, Hendrik Boogaard, Davide Fumagalli, Sander Janssen, Rob Knapen, 
+Daniel van Kraalingen, Iwan Supit, Raymond van der Wijngaart, and Kees van Diepen. 
+\textit{25 Years of the WOFOST Cropping Systems Model.} Agricultural Systems 168 
+(January 1, 2019): 154–67. \footnote{https://doi.org/10.1016/j.agsy.2018.06.018}
+
+
+\section{Levels of crop production}
+
+To be able to deal with the ecological diversity of agriculture, three hierarchical levels of 
+crop growth can be distinguished: potential growth, limited growth and reduced growth. 
+Each of these growth levels corresponds to a level of crop production: potential, limited and 
+reduced production
+
+Reality rarely corresponds exactly to one of these growth/production levels, but it is 
+useful to reduce specific cases to one of them, because this enables you to focus on the 
+principal environmental constraints to crop production, such as light, temperature, 
+water and the macro nutrients nitrogen (N), phosphorus (P) and potassium (K). Other 
+factors can often be neglected because they do not influence the crop's growth rate 
+(De Wit, 1986; Rabbinge and De Wit, 1989; Penning de Vries et al., 1989).
+
+{\it Potential production level\/}\\
+
+Potential production represents the absolute production ceiling for a given crop when grown in 
+a given area under specific weather conditions. It is determined by the crop’s response to CO$_{2}$ 
+and the temperature and solar radiation regimes during the growing season. In practice, this 
+ceiling can only be reached with a high input of fertilizers, irrigation and thorough pest and
+weed control. In addition, crop establishment should be perfect, there should be no losses 
+caused by traffic or grazing, and there should be no damage to the crop by wind, hail, frosts.
+Because potential yield is also determined by crop properties, yield potential varies over
+crop varieties and can be increased by breeding. In the computer model, potential yield 
+depends on the choice of crop variety, sowing date and weather data set. Near to potential 
+yield levels are realized on some arable and grassland farms in Western Europe, and 
+sometimes in (glasshouse) horticulture. In these cases, the weather conditions and 
+crop characteristics exclusively determine the potential growth rate. When the canopy 
+fully covers the soil, the increase in biomass, expressed in dry matter, is typically 
+between 150 and 350 kg ha$^{-1}$ day$^{-1}$.
+
+{\it Attainable production level\/}\\
+At this production level the yield of the crop is limited by the availability of water and/or nutrients 
+during a part or the complete growing season. 
+
+In this scenario, the water-limited yield represents the maximum yield that can be obtained under 
+rain-fed conditions but with optimal nutrient supply. The yield limiting effect of drought depends on 
+the soil moisture availability as determined by the amounts of rainfall and evapotranspiration, and 
+heir distribution over the growing season, by soil type, soil depth and groundwater influence. The 
+difference between potential and water-limited production indicates the production increase that 
+could be achieved by irrigation. A special case of water-limited conditions is related to an excess 
+of soil moisture, causing oxygen shortage for the plant roots. So oxygen limited production would be 
+a more appropriate term. Its effect depends on soil properties and drainage measures and is difficult 
+to quantify by modelling.
+
+The nutrient limited production corresponds to a situation that water is not limiting but when no 
+manure or fertilizers are added to the soil. Then, nutrient availability depends on the supply of 
+nutrients to the plant roots and can be estimated from soil characteristics which is often insufficient 
+and becomes limiting to the growth of the crop. Usually in (sub)-humid climates, the water-limited yield 
+is higher than the nutrient-limited yield, so that yields can be increased by nutrient application without 
+irrigation, but in cases of severe droughts the nutrient-limited yield may exceed the water-limited 
+yield, and then water should be applied to increase yield.
+
+
+{\it Reduced production level\/}\\
+In this scenario the crop yield can be further reduced by factors such as pest, disease, competition with weeds
+or pollutants such as ozone, salt or heavy metals. This yield level reflects what farmers actual
+harvest from their fields. The gap between the different yield levels (yield gap) varies widely
+across the globe and finding approaches to close the yield gap is a an area of intense research,
+see http://yieldgap.org
+
+Note that the WOFOST 7.1 crop simulation model can be applied in the domain of potential crop
+production and production with a water shortage (potential and water-limited yield levels). 
+
+\section{Guide to this manual}
+
+This manual covers a detailed description of the processes of crop growth and water movement as they are
+implemented in WOFOST Version 7.1. First of all, ancillary calculation will be described including:
+\begin{itemize}
+	\item derived meteorological variables
+	\item reference evapotranspiration
+	\item day length and solar elevation
+	\item extra terrestrial radiation
+\end{itemize}
+
+Next, the different components of the crop simulation itself will be described in detail:
+\begin{itemize}
+	\item phenology
+	\item transpiration
+	\item assimilation:
+	\subitem gross photosynthesis rate
+	\subitem Correction for suboptimal temperature
+	\subitem Correction for water stress
+	\item Maintenance respiration
+	\item growth of the crop:
+	\subitem Net photosynthesis rate
+	\subitem growth respiration
+	\subitem partitioning
+	\subitem leaf growth and senescence 
+	\subitem stems
+	\subitem Roots
+	\subitem storage organs	
+\end{itemize}
+
+Finally, the soil components are described which consist of several water balance implementations.

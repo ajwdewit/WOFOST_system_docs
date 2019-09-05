@@ -1,0 +1,9 @@
+# Data points for generating the Specific leaf area function in the WOFOST manual.,
+0.00, 0.00550
+0.18, 0.00550
+0.40, 0.00110
+0.65, 0.00200
+0.79, 0.00170
+1.00, 0.00200
+1.55, 0.00210
+2.00, 0.00220
