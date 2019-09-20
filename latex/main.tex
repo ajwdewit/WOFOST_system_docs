@@ -12,6 +12,7 @@
 \usepackage{ctable}
 \usepackage{rotating}
 \usepackage{booktabs}
+\usepackage{textcomp}
 
 %\ShowDisplacementBoxes
 
@@ -63,7 +64,8 @@
 \fancyhf{}
 %\fancyhead[LE,RO]{\bfseries\thepage}
 \fancyhead[LO]{\bfseries\rightmark}
-%\fancyhead[RE]{\bfseries\leftmark}
+\fancyhead[RE]{\bfseries\leftmark}
+\fancyfoot[C]{\thepage}
 \headheight 15pt
 
 \fancypagestyle{plain}{%
@@ -86,10 +88,11 @@
 }  
 
 % PDF formatting
-\usepackage[pdftitle={System description of the WOFOST 7.1 crop simulation model },pdfpagemode=UseOutlines, pdfauthor={Allard de Wit}, pdfpagetransition=Dissolve, bookmarks=true]{hyperref}
+\usepackage[pdftitle={System description of the WOFOST 7.1 crop simulation model},pdfpagemode=UseOutlines, pdfauthor={Allard de Wit}, pdfpagetransition=Dissolve, bookmarks=true]{hyperref}
 
 
 \begin{document}
+\pagenumbering{arabic}
 
 \frontmatter
 \begin{titlepage}
