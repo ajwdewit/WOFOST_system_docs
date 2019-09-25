@@ -1164,7 +1164,7 @@ Where:\\[5pt]
 
 For tropical species, the reference temperature may be 10\textdegree C higher than for species from
 temperate climates. The maintenance requirements of a crop are likely to be adapted to
-the higher growth temperatures. However, in WOFOST 7.1 the reference temperature is
+the higher growth temperatures. However, in WOFOST 7.2 the reference temperature is
 fixed at 25\textdegree C for all crops.
 
 As stated before, maintenance respiration rate depends on the amount of dry matter in the
@@ -1175,7 +1175,7 @@ maintenance respiration rate results in the amount of assimilates available for 
 structural material. When the crop ages, its metabolic activity and therefore its
 maintenance requirements decreases. This effect could be accounted for by relating 
 the maintenance coefficients to the N content of the tissues (van Keulen \& Seligman, 1987)
-but this is not accounted for in WOFOST 7.1.
+but this is not accounted for in WOFOST 7.2.
 
 
 \section{Transpiration and evaporation}
@@ -1713,7 +1713,7 @@ as the independent variable (see Appendix 2). Acronyms used in the model: {\bf F
 {\bf FOTB} (so), {\bf FRTB} (rt) and {\bf FSTB} (st).
 
 At any development stage the following relation must be valid, if not, the simulation will
-be stopped (see also fig. 5.6):
+be stopped (see also fig. \ref{fig:partitioning}):
 
 \begin{equation}
 % eq 5.46
@@ -1792,7 +1792,7 @@ specific and is defined as the daily amount of the living biomass which no longe
 participates in the plant processes. The death rate of stems and roots is considered to be a
 function of development stage. This dependency is described using an
 AFGEN table with the development stage as the independent variable (see also Appendix
-2). The death rate of leaves is more complicated. Leaf senescence due to shading (high
+\ref{app:AFGEN}). The death rate of leaves is more complicated. Leaf senescence due to shading (high
 LAI), water stress and also due to exceedance of the life span should be accounted for.
 
 The net growth rate of the stems and roots can described by:
@@ -1843,10 +1843,10 @@ Where:\\[5pt]
 	i &:& Stems (st), roots (rt), leaves (lv)\\
 \end{tabularx}
 
-The equation \ref{eq:5.49} is recursive. In the model, the initial values of the dry weight of the
+In the model, the initial values of the dry weight of the
 various organs are calculated. An initial value for the total dry weight of the crop
 (acronym: {\bf TDWI}) should be provided by the user. This value is multiplied by the
-partioning factors, pc$_{{\rm i}}$, at emergence, yielding the initial values of dry weight of the
+partitioning factors, pc$_{{\rm i}}$, at emergence, yielding the initial values of dry weight of the
 various organs.
 
 \subsection{Growth of leaves}
@@ -1871,7 +1871,7 @@ stage, can be calculated as:
 
 \begin{equation}
 % eq:5.50
-L _{Exp,t} ~=~LAI _{{t~RL~T}_{e}}
+L _{Exp,t} ~=~LAI_{t}~RL~T_{e}
 \end{equation}
 
 Where:\\[5pt]
@@ -1882,7 +1882,7 @@ Where:\\[5pt]
 	[ha ha$^{{\rm -1}}$]\\
 	RL &:& Maximum relative increase of leaf area index   &
 	[\degrees C$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
-	T$_{{\rm e}}$ &:& Daily effective temperature (see 5.2c)   &
+	T$_{{\rm e}}$ &:& Daily effective temperature (number of degrees above the base temperature for leave ageing {\bf TBASE})   &
 	[\degrees C]\\
 \end{tabularx}
 
@@ -1908,11 +1908,6 @@ Where:\\[5pt]
 	[ha ha$^{{\rm -1}}$]\\
 	$\Delta$t &:& Time step   &    [d]
 \end{tabularx}
-
-The equation\ref{eq:5.51} is recursive. In the model, {\bf LAI$_{{\rm t}}$} is initialized by 
-setting the starting
-value equal to the leaf area index at emergence (acronym: {\bf LAIEM}). The leaf area index
-at emergence is crop specific and should be provided by the user.
 
 During the development of the crop, leaf area expansion is increasingly restricted by
 assimilate supply (i.e. source limited increase). Branching and tillering generate an
@@ -1946,8 +1941,7 @@ $\Delta$W$_{{\rm lv}}$. This process will be described later in more detail in t
 The specific leaf area, {\bf S$_{{\rm la}}$} (acronym: {\bf SLATB}), is defined as the increase of the leaf area
 of the crop per kg weight increase of the living leaves. S$_{{\rm la}}$ is crop specific and a function
 of the development stage (see figure 8). In the model this dependency is described using
-an AFGEN table with the development stage as the independent variable (see also
-Appendix 2).
+an AFGEN table with the development stage as the independent variable.
 
 The accumulated leaf area index at time step t during the source limited growth stage can
 be described as:
@@ -1966,7 +1960,7 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step    &    [d]\\
 \end{tabularx}
 
-The equation \ref{eq:5.53} is recursive. In the model, {\bf LAI$_{{\rm t}}$} is initialized by 
+In the model, {\bf LAI$_{{\rm t}}$} is initialized by 
 taking the fraction of initial biomass (acronym: {\bf TWDI}) partitioned to the leaves and 
 multiply at with the specific leaf area at the current DVS. Note that in older versions of
 WOFOST a specific leaf area index at emergence (acronym: {\bf LAIEM}) was used which should 
@@ -2021,8 +2015,8 @@ Where:\\[5pt]
 	SS$_{{\rm i}}$ &:& Specific green area of organ i    &
 	[ha kg$^{{\rm -1}}$]\\
 	W$_{{\rm i}}$ &:& Dry matter organ i (see eq. \ref{eq:5.49})    &
-	[kg ha$_{{\rm -1}}$]\\
-	i &:& Stems (st), storage organs (so)\\
+	[kg ha$^{{\rm -1}}$]\\
+	i &:& Stems (st), storage organs (so)
 \end{tabularx}
 
 The specific green area of stems (acronym: {\bf SSA}) and storage organs (acronym: {\bf SPA}) are
@@ -2064,7 +2058,7 @@ mutual shading.
 {\it physiologic ageing}\\
 Leaves die due to exceedance of the life span for leaves (i.e. physiologic ageing). Life
 span is defined as the maximum time in days a leaf can live at a constant temperature of
-35\degrees C. Life span is crop specific. The concept of lifespan is compatible with a definition
+35\textdegree C. Life span is crop specific. The concept of lifespan is compatible with a definition
 in terms of temperature sum as given by Gallagher (1979).
 The physiologic ageing factor per time step can be calculated as:
 
@@ -2075,12 +2069,9 @@ f _{rai} ~=~{\frac{ T~-~T _{b\, ,\, age} }{35~-~ T _{b\, ,\, age} }}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
-	f$_{{\rm rai}}$ &:& Physiologic ageing factor for leaf age increase   &
-	[-]\\
-	T &:& Daily (average) temperature   &
-	[\degrees C]\\
-	T$_{{\rm b,age}}$ &:& Lower threshold temperature for physiologic ageing   &
-	[\degrees C]\\
+	f$_{{\rm rai}}$ &:& Physiologic ageing factor for leaf age increase   & 	[-]\\
+	T &:& Daily (average) temperature   & 	[\textdegree C]\\
+	T$_{{\rm b,age}}$ &:& Lower threshold temperature for physiologic ageing   & 	[\textdegree C]\\
 \end{tabularx}
 
 The lower threshold temperature for physiologic ageing, {\bf T$_{{\rm b,age}}$} (acronym: {\bf TBASE}), is
@@ -2112,7 +2103,7 @@ The potential death rate of leaves due to water stress can be calculated as:
 
 \begin{equation}
 % eq:5.58
-\Delta W_{d}^{1} ~=~ W_{lv} \, (\, 1\, -\,{\frac{T _{a} }{T _{p} }} \, )\, {\rm \dag } _{\max ,lv} 
+\Delta W_{d}^{1} ~=~ W_{lv} \, (\, 1\, -\,RF_{tra} \, )\, {\rm \dag } _{\max ,lv} 
 \end{equation}
 
 Where:\\[5pt]
@@ -2123,10 +2114,8 @@ Where:\\[5pt]
 	water stress   &     [kg kg$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
 	W$_{{\rm lv}}$ &:& Dry matter weight of the leaves (see eq. \ref{eq:5.49})  &
 	[kg ha$^{{\rm -1}}$]\\
-	T$_{{\rm a}}$ &:& Actual transpiration (see \S \ref{sec:evapotranspiration})    &
-	[cm d$^{{\rm -1}}$]\\
-	T$_{{\rm p}}$ &:& Potential transpiration (see \S \ref{sec:evapotranspiration})   &
-	[cm d$^{{\rm -1}}$]\\
+	RF$_{{\rm tra}}$ &:& Reduction factor for transpiration (see \S \ref{sec:evapotranspiration})    &
+	[-]\\
 \end{tabularx}
 
 The maximum relative death rate of leaves due to water stress, {\bf \dag $_{{\rm max,lv}}$} 
@@ -2142,7 +2131,7 @@ ha ha$^{{\rm -}{1}}$, respectively (Spitters {\it et al.} 1989).
 The potential death rate of leaves due to high LAI can be calculated as:
 
 \begin{equation}
-% eq:5.59
+\label{eq:5.59}
 \Delta W_{d}^{2} ~=~ W_{lv} \cdot 0.03 \cdot {\frac{LAI - LAI_c}{LAI_c}}
 \end{equation}
 
@@ -2169,7 +2158,7 @@ Where:\\[5pt]
 	the diffuse radiation flux   &    [-]\\
 \end{tabularx}
 
-The last term of the right hand side of the equation 5.59 must be between 0 and 0.03. A 
+The last term of the right hand side of the equation \ref{eq:5.59} must be between 0 and 0.03. A 
 value lower than 0 will be set to 0 and a value higher than 0.03 will be set to 0.03. In the
 model, the highest value of the two calculated potential death rates of leaves, 
 $\Delta$W$^{{\rm 1}}$$_{{\rm d}}$ and $\Delta$W$^{{\rm 2}}$$_{{\rm d}}$, is selected 
@@ -2225,8 +2214,7 @@ and the increase of the depth of the roots, with the exception that the increase
 depth will cease if there is no partitioning of biomass to roots anymore. Also there is 
 no impact of environmental conditions (such as drought) on root growth.
 
-In the model, root growth is implemented in a straightforward way. One needs to specify
-the following crop and soil specific parameters:
+In the model, the following crop and soil specific parameters are required:
 \begin{itemize}
 	\item Initial rooting depth, {\bf RD$_{{\rm i}}$} (acronym: {\bf RDI});
 	\item Maximum rooting depth determined by the crop, {\bf RD$_{{\rm crop}}$} (acronym: {\bf RDMCR});
@@ -2234,8 +2222,9 @@ the following crop and soil specific parameters:
 	\item Maximum rooting depth determined by the soil, {\bf RD$_{{\rm soil}}$} (acronym: {\bf RDMSOL}).
 \end{itemize}
 
-The daily increase of the rooting depth is a function of development stage and is crop
-specific. The root growth can be calculated as:
+The daily increase of the rooting depth is crop specific. 
+
+The root growth can be calculated as:
 
 \begin{equation}
 % eq:5.62
@@ -2263,7 +2252,7 @@ Where:\\[5pt]
 	$\Delta$RD &:& Increase of the rooting depth    & [cm]\\
 \end{tabularx}
 
-In the model, the maximum rooting depth is established by taking the lowest value of the\\
+In the model, the maximum rooting depth is established by taking the lowest value of the
 maximum rooting depth determined by the crop, RD$_{{\rm crop}}$ and the maximum rooting depth
 determined by the soil, RD$_{{\rm soil}}$. It is assumed that the maximum rooting depth is 
 always equal or higher than the initial rooting depth.
@@ -2382,8 +2371,7 @@ The photosynthetic capacity of a leaf is also affected by its age: A$_{{\rm m}}$
 shortly after full expansion of the leaf, followed by a gradual decline with ageing
 (Rawson {\it et al.}, 1983; Dwyer \& Stewart, 1986). Differences in photosynthetic capacity of
 the leaves are closely related to their nitrogen content, whether these variations are due to
-age, growing conditions or fertilizer application (van Keulen \& Seligman, 1987). Leaves
-
+age, growing conditions or fertilizer application (van Keulen \& Seligman, 1987). Leaves 
 lower in the canopy have a lower photosynthetic capacity because they are older and are
 adapted to lower radiation levels (Acock {\it et al.}, 1978; Williams, 1985). They also have
 lower nitrogen concentrations. The value of A$_{{\rm m}}$ used in the model, refers to the
