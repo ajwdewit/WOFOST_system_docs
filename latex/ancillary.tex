@@ -4,9 +4,9 @@
 \section{Preparatory (weather) variables}
 
 
-The average temperature is calculated as the average of the minimum and the maximum
+The daily average temperature is calculated as the average of the daily minimum and the maximum
 temperature. This average temperature \={T} is equal to the so called air temperature (T) used
-in the model calculations. The maximum and minimum temperature are measured daily values or
+in the model calculations. The maximum and minimum temperatures are measured daily values or
 derived from other sources such as a weather forecasting model.
 
 \begin{equation}
@@ -210,7 +210,7 @@ depicted in Table \ref{tab:angstAB}.
 	\end{tabular}
 \end{table}
 
-It should be clear that the constants {\bf A} and {\bf B} (acronym: {\bf COEFA} and {\bf COEFB}) should be
+It should be clear that the constants {\bf A} and {\bf B} should be
 provided by the user. As an alternative, the method developed by Supit
 (1994) can be applied. This method calculates the incoming global
 radiation as a function of cloud cover and sunshine duration. It can be considered as an
@@ -261,7 +261,7 @@ daily extra-terrestrial radiation, S$_{{\rm o,d}}$, can be calculated.
 
 \section{Reference evapotranspiration}
 
-Strictly speaking, transpiration is the loss of water from the plants, and evaporation is the
+Transpiration is the loss of water from the plants and evaporation is the
 loss of water from the soil or from a free-water surface. Evapotranspiration covers both
 transpiration and evaporation.
 The principal driving force for evaporation is the gradient of vapour pressure between the
@@ -303,14 +303,14 @@ the older Penman approach as reference evapotranspiration for open water and bar
 Moreover, the option to use the older Penman approach as reference evapotranspiration is still
 available in order to compare with historical studies.
 
-The value calculated according to the P/PM equations is the potential evapotranspiration, 
-i.e. without limitations with respect to the supply of liquid water to the
-evaporating surface. This ET0 value is often used as a reference value, to
-which actual crop water demand is related. To translate ET0 into crop water require\-ments,
+The value calculated according to the Penmn and Penman-Monteith equations is the potential 
+evapotranspiration $ET0$, i.e. without limitations with respect to the supply of liquid water to the
+evaporating surface. This $ET0$ value is often used as a reference value, to
+which actual crop water demand is related. To translate $ET0$ into crop water require\-ments,
 so called crop factors can be used (e.g. Doorenbos \& Pruitt, 1977; Feddes {\it et al.},
 1978). See also \S \ref{sec:evapotranspiration}.
 
-Note that the equations used to compute ET0 provide the value in mm/day while internally
+Note that the equations used to compute $ET0$ provide the value in mm/day while internally
 this is converted into cm/day.
 
 \subsection{Terms in the Penman formula}
@@ -580,7 +580,7 @@ Where:\\[5pt]
 
 Note that during the winter in Europe the solar radiation at the top of the atmo\-sphere is at 
 its maximum! The height of the sun at any moment throughout the day and at any place and date can be
-calculated with (subroutine {\bf ASTRO}):
+calculated using:
 
 \begin{equation}
 \label{eq:SolarElevation}

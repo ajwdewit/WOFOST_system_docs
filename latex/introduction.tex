@@ -3,18 +3,21 @@
 
 \section{About WOFOST}
 
-WOFOST is the acronym for WOrld FOod STudies. It is the name of a model for
-simulating cropping systems involving the growth of crops in interaction
-with its environment including weather, soil and agromanagement. 
-WOFOST has been developed by
-Wageningen University and Research (and its predecessors) already
-since the 1980-ies. Currently, the model is maintained and improved by Wageningen 
+WOFOST is the acronym for WOrld FOod STudies and its purpose is to serve as a
+simulation model for cropping systems. The model thus simulates the growth of crops 
+in interaction with their environment including weather, soil and agromanagement. 
+The output of the WOFOST model includes the simulated total crop biomass and crop
+yield as well as variables like leaf area and crop water use.
+
+WOFOST has been developed by Wageningen University and Research (and its predecessors) 
+already since the 1980s. Currently, the model is maintained and improved by Wageningen 
 University and Research in cooperation with the Joint Research Centre of the European 
-Commission. Several implementation of the model are available which have been
+Commission. Several implementations of the model are available which have been
 developed for both research and operational applications.
 
 for a general introduction to the WOFOST model and an overview of the
 processes included in the model, see:\\
+\\
 Wit, Allard de, Hendrik Boogaard, Davide Fumagalli, Sander Janssen, Rob Knapen, 
 Daniel van Kraalingen, Iwan Supit, Raymond van der Wijngaart, and Kees van Diepen. 
 \textit{25 Years of the WOFOST Cropping Systems Model.} Agricultural Systems 168 
@@ -25,18 +28,11 @@ Daniel van Kraalingen, Iwan Supit, Raymond van der Wijngaart, and Kees van Diepe
 
 To be able to deal with the ecological diversity of agriculture, three hierarchical levels of 
 crop growth can be distinguished: potential growth, limited growth and reduced growth. 
-Each of these growth levels corresponds to a level of crop production: potential, limited and 
+Each of these growth levels corresponds to a level of crop production: potential, attainable and 
 reduced production
 
-Reality rarely corresponds exactly to one of these growth/production levels, but it is 
-useful to reduce specific cases to one of them, because this enables you to focus on the 
-principal environmental constraints to crop production, such as light, temperature, 
-water and the macro nutrients nitrogen (N), phosphorus (P) and potassium (K). Other 
-factors can often be neglected because they do not influence the crop's growth rate 
-(De Wit, 1986; Rabbinge and De Wit, 1989; Penning de Vries et al., 1989).
-
 {\it Potential production level\/}\\
-Potential production represents the absolute production ceiling for a given crop when grown in 
+Potential production represents the production ceiling for a given crop when grown in 
 a given area under specific weather conditions. It is determined by the crop’s photosynthesis
 response to CO$_{2}$ 
 and the temperature and solar radiation regimes during the growing season. In practice, this 
@@ -45,7 +41,7 @@ weed control. In addition, crop establishment should be perfect, there should be
 caused by traffic or grazing, and there should be no damage to the crop by wind, hail, frosts.
 Because potential yield is also determined by crop properties, yield potential varies over
 crop varieties and can be increased by breeding. In the computer model, potential yield 
-depends on the choice of crop variety, sowing date and weather data set. Near to potential 
+depends on the choice of crop variety, sowing date and weather data set. Near-potential 
 yield levels are realized on some arable and grassland farms in Western Europe, and 
 sometimes in (glasshouse) horticulture. In these cases, the weather conditions and 
 crop characteristics exclusively determine the potential growth rate. When the canopy 
@@ -58,20 +54,22 @@ during a part or the complete growing season.
 In this scenario, the water-limited yield represents the maximum yield that can be obtained under 
 rain-fed conditions but with optimal nutrient supply. The yield limiting effect of drought depends on 
 the soil moisture availability as determined by the amounts of rainfall and evapotranspiration, and 
-heir distribution over the growing season, by soil type, soil depth and groundwater influence. The 
+their distribution over the growing season, by soil type, soil depth and groundwater influence. The 
 difference between potential and water-limited production indicates the production increase that 
 could be achieved by irrigation. A special case of water-limited conditions is related to an excess 
 of soil moisture, causing oxygen shortage for the plant roots. So oxygen limited production would be 
 a more appropriate term. Its effect depends on soil properties and drainage measures and is difficult 
 to quantify by modelling.
 
-The nutrient limited production corresponds to a situation that water is not limiting but when no 
-manure or fertilizers are added to the soil. Then, nutrient availability depends on soil nutrient supply only
-which is often insufficient and becomes limiting to the growth of the crop. 
+The nutrient limited production corresponds to a situation that water is not limiting but when 
+nutrient availability is insufficient to cover the crop's demands, which is actually very common with N 
+(also in cases when part of the fertiliser applied is lost through leaching, volatilisation or denitrification).
 Usually in (sub)-humid climates, the water-limited yield 
 is higher than the nutrient-limited yield, so that yields can be increased by nutrient application without 
 irrigation, but in cases of severe droughts the nutrient-limited yield may exceed the water-limited 
 yield, and then water should be applied to increase yield.
+
+
 
 {\it Reduced production level\/}\\
 In this scenario the crop yield can be further reduced by factors such as pest, disease, competition with weeds
@@ -80,9 +78,16 @@ harvest from their fields. The gaps between the different yield levels (yield ga
 across the globe and finding approaches to close the yield gap is an area of ongoing research,
 see http://yieldgap.org
 
+Reality rarely corresponds exactly to one of these growth/production levels, but it is 
+useful to reduce specific cases to one of them, because this enables you to focus on the 
+principal environmental constraints to crop production, such as light, temperature, 
+water and the macro nutrients nitrogen (N), phosphorus (P) and potassium (K). Other 
+factors can often be neglected because they do not influence the crop's growth rate 
+(De Wit, 1986; Rabbinge and De Wit, 1989; Penning de Vries et al., 1989).
+
 Note that the WOFOST 7.2 crop simulation model can be applied in the domain of potential crop
 production and production with a water shortage (potential and water-limited yield levels). 
-To estimate nutrient limited product the output from WOFOST has often been coupled to the QUEFTS
+To estimate nutrient limited production the output from WOFOST has often been coupled to the QUEFTS
 model (Jansen et al., 1990) which can estimate nutrient requirements and nutrient-limited yields.
 However, QUEFTS is not a dynamic simulation model but uses seasonal nutrient supply to estimate
 nutrient-limited yield. Therefore it is not regarded to be part of WOFOST.
@@ -90,12 +95,12 @@ nutrient-limited yield. Therefore it is not regarded to be part of WOFOST.
 \section{Guide to this manual}
 
 This manual covers a detailed description of the processes of crop growth and water movement as they are
-implemented in WOFOST Version 7.2. First of all, ancillary calculation will be described including:
+implemented in WOFOST Version 7.2. First of all, ancillary calculations will be described including:
 \begin{itemize}
 	\item derived meteorological variables
 	\item reference evapotranspiration
 	\item day length and solar elevation
-	\item extra terrestrial radiation
+	\item extraterrestrial radiation
 \end{itemize}
 
 Next, the different components of the crop simulation itself will be described in detail:
@@ -117,4 +122,12 @@ Next, the different components of the crop simulation itself will be described i
 	\subitem Storage organs	
 \end{itemize}
 
-Finally, the soil components are described which consist of several water balance implementations.
+Finally, the soil components are described. Currently, several water balance implementations are
+available for simulating the interaction between the soil and the crop.
+
+\section{Acronyms used}
+
+Throughout the document, important parameters and variables are described using mathematical symbols as well as
+the acronyms that are used in the WOFOST software code. For example the crop development stage
+D$_{{\rm s,t}}$ is also denoted as {\bf DVS}.
+

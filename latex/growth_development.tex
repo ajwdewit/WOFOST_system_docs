@@ -3,12 +3,13 @@
 \section{Overview of the crop growth model}
 
 The WOFOST model describes phenological development, growth and yield formation of
-a crop from emergence till maturity on the basis of crop genetic properties and 
+a crop from emergence untill maturity on the basis of crop genetic traits and 
 environmental conditions. The model simulates dry matter accumulation of a crop as a function
 of irradiation, temperature and crop characteristics in time steps of one day. 
 The basis for calculating dry matter production, is the rate of gross CO$_{{\rm 2}}$ assimilation of
 the canopy. This rate is dependent on the radiation energy absorbed by the canopy, which
-is a function of incoming radiation and of crop leaf area. From the absorbed radiation and
+is a function of incoming radiation and the optical characteristics of the leaf canopy.
+From the absorbed radiation and
 the photosynthetic characteristics of single leaves, the daily rate of CO$_{{\rm 2}}$ assimilation of the
 crop is calculated. Part of the carbohydrates produced (CH$_{{\rm 2}}$O) are used to provide energy
 for the maintenance of the existing live biomass (maintenance respiration). The remaining
@@ -40,11 +41,12 @@ The dry weights of the plant organs are obtained by integrating their growth rat
 
 Leaf mass is subdivided into age classes. During the development of the crop a part of
 living biomass dies due to senescence. Some simulated crop growth processes are
-influenced by temperature, like for example the maximum rate of photosynthesis and the
-maintenance respiration. Other processes like the partitioning of assimilates or decay of
+influenced by temperature, such as the maximum rate of photosynthesis and the
+maintenance respiration. Other processes like the partitioning of assimilates or senescence of
 crop tissue are steered by the phenological stage. The phenological development stage is
 calculated as a function of ambient temperature and possibly modified by the effect of day
-length and vernalization. An overview of all these processes is depicted in \ref{fig:CropGrowthProc2}.
+length and vernalization. An overview of all these processes is given in figure 
+\ref{fig:CropGrowthProc2}.
 
 \begin{figure}[p]
 	\centering
@@ -55,20 +57,20 @@ length and vernalization. An overview of all these processes is depicted in \ref
 
 \section{Phenological development of a crop}
 
-The physiological age of a plant is defined by the development stage (DVS), which on its turn is
+The physiological age of a plant is defined by the development stage (acronym: {\bf DVS}), which on its turn is
 characterized by the formation of the various organs and their appearance. For cereal crops, the most
 important phenological change is the one from vegetative to the reproductive stage, which
 determines the most important change in the dry matter allocation over organs. Other crops like
-sugar beets, potatos or legumes have a more gradual change in the appearance of different crop organs.
+sugar beet, potatoes or legumes have a more gradual change in the appearance of different crop organs.
 
-As many physiological and morphological processes change with the phenological stage of the
-plant, accurate quantification of phenological development is essential in any simulation
-model for crop growth. In WOFOST, the development stage is expressed in a dimensionless variable, 
+As many physiological and morphological processes change with DVS, accurate quantification 
+of phenological development is essential in any simulation
+model for crop growth. In WOFOST, the development stage is expressed as a dimensionless variable, 
 having the value -0.1 at sowing, 0 at seedling emergence, 1 at flowering and 2 at maturity. 
 
 This approach for phenological development is typical for a cereal crop and all other crops are forced 
 into this pattern. This also implies that DVS = 1 not necessarily corresponds to a flowering phase, 
-but rather indicates the start of the formation of the reproductive organs. For example, for the 
+but rather indicates the start of the formation of the storage or reproductive organs. For example, for the 
 simulation of potato or root crops the DVS = 1 represents the moment of tuber or root initiation rather 
 than flowering.
 
@@ -95,7 +97,7 @@ should be given by the user. The daily effective temperature depends on the base
 temperature {\bf TBASEM}, below which no germination processes take place, and the maximum daily
 temperature, beyond which the germination activity does not increase anymore {\bf TEFFMX}.
 Both are crop specific. An example of this effective daily temperature as a function of daily
-average temperature is depicted in figure \ref{fig:TEFFMAX}.
+average temperature is shown in figure \ref{fig:TEFFMAX}.
 
 \begin{figure}[p]
 	% fig 5.2
@@ -124,11 +126,9 @@ Where:\\[5pt]
 	T  &:& (Average) daily temperature & [\textdegree C]
 \end{tabularx}
 
-Species originating from temperate regions show a base temperature of
-0$-$3\textdegree C, while species of subtropical and tropical origins have a base temperature of
-9$-$14\textdegree C (Angus {\it et al.}, 1981). Within a species, cultivars may vary substantially 
-in their temperature requirements. The temperature sum, therefore, must be characterized for
-each cultivar or group of cultivars (maturity classes).   
+For pragmatic reasons, time to emergence is taken as a function of air temperature. It would be more correct to establish 
+relations with soil temperature but this is not done due to data scarcity.
+
 
 \subsection{Phenological development stage}
 \label{sec:DVS}
@@ -155,6 +155,12 @@ allowing to account for non-linearity (lower and upper threshold values and opti
 ranges). The average temperature is the independent variable in the AFGEN table (see
 Appendix 2). 
 
+Species originating from temperate regions (wheat, barley, potato, etc.) show a base temperature of
+0$-$3\textdegree C, while species of subtropical and tropical origins (maize, sorghum, sugar cane, etc) 
+have a base temperature of 9$-$14\textdegree C (Angus {\it et al.}, 1981). Within a species, 
+cultivars may vary substantially  in their temperature requirements. The temperature sum, therefore, 
+must be characterized for each cultivar or group of cultivars (maturity classes).   
+
 The development rate based on temperature can be reduced by the effect of vernalization and 
 day length and can thus be obtained by:
 
@@ -177,8 +183,8 @@ The temperature dependent correction factor, {\bf DT$_{{\rm s}}$} (acronym: {\bf
 the temperature sum required to complete stage i, {\bf $\sum$T$_{{\rm i}}$} (acronym: 
 {\bf TSUM1} or {\bf TSUM2}) are crop dependent and should be provided by the user.
 
-The development stage at time step t is the integral of the development rate over the time
-(i.e. time span from emergence to current time step) and can be calculated according to:
+The development stage at time step $t$ is the integral of the development rate over the time
+(i.e. time span from emergence to current time step) and can be calculated as:
 
 \begin{equation}
 \label{eq:5.4}
@@ -192,18 +198,15 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step   &     [d]\\
 \end{tabularx}
 
-\subsection{Day length}
+\subsection{Photoperiod sensitivity}
 
 For certain crops or cultivars, during the vegetative stage (i.e. D$_{{\rm s}}$ $<$ 1), the 
-effect of day length should be taken into account (e.g. "photosensitivity"). Moreover, crops 
-that are sown in autumn
-in temperate climate often require exposure to the prolonged cold of winter in order to be
-able to flower. This effect is called the "vernalization requirement" of the crop.
-
+effect of day length should be taken into account (e.g. "photoperiod sensitivity"). 
 Approaches that describe the effect of day length 
 quantitatively are given amongst others by  Weir {\it et al.} (1984), Hadley {\it et al}. (1984) 
 and Reinink {\it et al.} (1986). In WOFOST, a reduction factor for the development rate as a 
-function of the day length is introduced. In case of photosensitivity can be calculated as:
+function of the day length is introduced. In case of photosensitivity  a reduction factor
+can be calculated as:
 
 \begin{equation}
 \label{eq:5.5}
@@ -214,8 +217,8 @@ Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	$f_{{\rm dayl}}$ &:& Development rate reduction factor as function of day length   &     [-]\\
 	D &:& Present day length (see eq. \ref{eq:AstroDaylength})   &     [h]\\
-	D$_{{\rm c}}$ &:& Critical day length for development (lower threshold)    &    [h]\\
-	D$_{{\rm o}}$ &:& Optimum day length for development (upper threshold)    &    [h]\\
+	D$_{{\rm c}}$ &:& Critical day length for development below which $f_{{\rm dayl}} = 0$  &    [h]\\
+	D$_{{\rm o}}$ &:& Optimum day length for development above which $f_{{\rm dayl}} = 1$)    &    [h]\\
 \end{tabularx}
 
 The user should provide information whether the development rate depends on temperature, 
@@ -226,16 +229,19 @@ the user.
 
 Note that in modern cultivars, photosensitivity is much less pronounced than in traditional
 cultivars, and that for the purpose of modelling the day length influence can often be ignored.
-However, for winter crops influence of day length and vernalization must be taken into
-account in order to avoid that the choice of the sowing date in autumn has a large impact on 
-the flowering and maturity date of the crop.
 
 
 \subsection{Vernalization}
 
-Vernalization is the induction of a plant's flowering process by exposure to the prolonged cold of winter, 
-or by an artificial equivalent. After vernalization, plants have acquired the ability to flower, but they may 
-require additional seasonal cues or weeks of growth before they will actually flower (source: Wikipedia). 
+Vernalization is the process by which flowering is promoted as plants sense exposure to the cold temperatures 
+of winter. A requirement for vernalization is an adaptive crop trait that helps prevent flowering before winter and
+permits flowering in the favorable conditions of spring (Choard, 1960; Kim, Dong-Hwan, \it{et al.} 2009).
+The "vernalization requirement" of the crop is the magnitude of the exposure to cold temperature in order
+to induce flowering.
+
+Particularly for winter crops the influence of day length and vernalization on phenological development must 
+be taken into account in order to avoid that the choice of the sowing date in autumn has a large impact on 
+the flowering and maturity date of the crop.
 
 The approach for vernalisation implemented in WOFOST is based on the work of Wang and Engel (1998) and of 
 van Bussel et al. (2015). 
@@ -243,9 +249,10 @@ Vernalization is simulated by assuming that a crop requires a number of (cultiva
 vernalization days in order to reach its vernalization requirement. One vernalization day is added to the 
 vernalization state 
 when the daily average temperature is within the optimal temperature range for vernalization. A fractional
-day or zero  is added when the temperature is outside of this range. This is rate of vernalization
+day or zero  is added when the temperature is outside of this range. This rate of vernalization
 (acronym: {\bf VERNR}) is decribed using an AFGEN table (acronym:  {\bf VERNRTB}) which describes the
-temperature response curve for vernalization (figure \ref{fig:VERNRTB}).
+temperature response curve for vernalization (figure \ref{fig:VERNRTB}). See appendix 2 for an explanation
+of the AFGEN tables.
 
 The reduction factor on development rate is than derived by linearly scaling the current vernalization state 
 ((acronym:  {\bf VERN}))  between a base vernalization ((acronym:  {\bf VERNBASE})) and the number of 
@@ -271,7 +278,7 @@ into account in WOFOST.
 To reduce the impact of a poorly choosen VERNSAT parameter, a critical DVS is defined after which 
 vernalization is switched off and the $f_{verb}$ is set to 1.0. This parameter \textbf{VERNDVS}
 is currently set to 0.3 by default but is adjustable by the user. In the case that the vernalization
-requirement is not reached before VERNDVS a warning must be issued to the user.
+requirement is not reached before VERNDVS a warning is issued to the user.
 
 \begin{figure}[p]
 	% fig 5.2
@@ -295,47 +302,44 @@ at a defined date, the value for {\bf DVSEND}) will be ignored.
 Daily dry matter production is the most detailed part of the model. The following steps
 can be distinguished and will be described separately:
 \begin{itemize}
-	\item Total instantaneous gross CO$_{{\rm 2}}$ assimilation of the canopy 
-	[\S \ref{sec:InstantGrossAssimilation}]
-	\item Total daily gross CO2 assimilation rate of the canopy 
-    [\S \ref{sec:DailyGrossAssimilation}]
-	\item Actual daily gross photosynthesis rate of the canopy
-	including temperature and development stage effect
-    [\S \ref{sec:DailyGrossPhotosynthesis}]
-	\item Reductions due to water and nutrient shortages
-    [\S \ref{sec:evapotranspiration}]
+	\item Potential instantaneous gross CO$_{{\rm 2}}$ assimilation of the canopy.
+	(\S \ref{sec:PotentialInstantGrossAssimilation})
+	\item Potential daily gross CO$_{{\rm 2}}$ assimilation rate of the canopy 
+   ([\S \ref{sec:PotentialDailyGrossAssimilation})
+	\item Actual daily gross photosynthesis rate of the canopy as a result of temperature,
+     development stage effects and water stress.
+    (\S \ref{sec:ActualDailyGrossPhotosynthesis})
 \end{itemize}
 
-To calculate the total daily gross CO$_{{\rm 2}}$ assimilation rate of the whole canopy, 
-an integration over time should be performed. Therefore, for given fluxes of photosynthetically
-active radiation, at three different periods of the day, the total instantaneous gross canopy
-CO$_{{\rm 2}}$ assimilation rate is computed. Afterwards, the integral of the total instantaneous
-gross canopy CO$_{{\rm 2}}$ assimilation rate over time, as a weighted average of the selected three
-hours, is calculated.
-
-For the calculation of the total instantaneous gross canopy CO$_{{\rm 2}}$ assimilation rate, an
+For the calculation of the potential instantaneous gross canopy CO$_{{\rm 2}}$ assimilation rate, an
 integration over depth of the crop canopy has to be performed.
 Therefore, at three different depths in the canopy the gross instantaneous assimilation rate
-is calculated, whereafter the integral of the gross instantaneous assimilation rate over
-depth, as a weighted average of the selected depths, is computed.
+is calculated, whereafter the instantaneous gross canopy CO$_{{\rm 2}}$ assimilation rate 
+at canopy level is calculated as a weighted average of the instantaneous rates at the selected depths
 
-Both calculations make use of the 3-point Gaussian integration method and for calculating daily total 
-gross assimilation (Goudriaan, 1986; Spitters, 1986) thus nine iterations are required: three periods
-of the day multiplied by three depths into the crop canopy. Finally, actual gross photosynthesis is 
+To calculate the potential daily gross CO$_{{\rm 2}}$ assimilation rate of the whole canopy, 
+an integration over time should be performed. Therefore, for given fluxes of photosynthetically
+active radiation, at three different periods of the day, the potential instantaneous gross canopy
+CO$_{{\rm 2}}$ assimilation rate is computed. Subsequently, the potential gross canopy CO$_{{\rm 2}}$ 
+assimilation rate is calculated as a weighted average of the instantaneous rates during the selected instances
+
+Both calculations make use of the 3-point Gaussian integration method (Goudriaan, 1986; Spitters, 1986) 
+thus nine iterations are required: three periods
+of the day multiplied by three depths into the crop canopy. Finally, the actual gross photosynthesis rate is 
 computed by applying correction factors for daytime temperature,
 night time temperature and water stress onto the total daily assimilation. The calculations performed
 will be described in more detail in the paragraphs \ref{sec:DailyGrossAssimilation} to 
 \ref{sec:AssimilationWaterStress}.
 
 
-\subsection{Total daily gross CO$_{{\rm 2}}$ assimilation rate of the canopy}
-\label{sec:DailyGrossAssimilation}
+\subsection{Potential daily gross CO$_{{\rm 2}}$ assimilation rate of the canopy}
+\label{sec:PotentialDailyGrossAssimilation}
 
 As is mentioned before, in order to integrate the gross instantaneous assimilation rate
 over the day, three points in time are selected to calculate the photosynthetically active
-radiation. In this particular case, the radiation is homogeneously distributed over the day
-according to the sine of the solar elevation, so the weighted average CO$_{{\rm 2}}$ 
-assimilation rate can therefore be calculated for half a day only.
+radiation. For this calculation, we assume that the radiation is distributed over the day 
+according to the sine of solar elevation (as would be the case on a clear cloudless day).
+So the weighted average CO$_{{\rm 2}}$ assimilation rate can therefore be calculated for half a day only.
 
 The three points in time are selected from noon to sunset (this explains the use of the
 constants 0.5 and 12.00):
@@ -457,8 +461,8 @@ Where:\\[5pt]
 	[kg ha$^{{\rm -1}}$ h$^{{\rm -1}}$]\\
 \end{tabularx}
 
-\subsection{Total instantaneous gross CO$_{2}$ assimilation of the canopy}  
-\label{sec:InstantGrossAssimilation}
+\subsection{Potential instantaneous gross CO$_{2}$ assimilation of the canopy}  
+\label{sec:PotentialInstantGrossAssimilation}
 
 The total instantaneous rate of CO$_{{\rm 2}}$ assimilation of the canopy is
 calculated from the incoming fluxes of diffuse and direct photosynthetic active radiation,
@@ -569,8 +573,8 @@ distribution of leaves with angles in different classes.
 
 In the model however, the leaf angle distribution is accounted for by using a so called
 cluster factor which is the measured extinction coefficient for diffuse radiation flux,
-relative to the theoretical one for a spherical leaf area distribution. The cluster factor can
-be calculated as: 
+relative to the theoretical one for a spherical leaf area distribution. The cluster factor is
+calculated as: 
 
 \begin{equation}
 \label{eq:5.16}
@@ -613,7 +617,7 @@ Where:\\[5pt]
 	$\sigma$ &:& Scattering coefficient     &    [-]\\
 \end{tabularx}
 
-\subsubsection{Absorption}
+\subsubsection{Light absorption}
 Three depths in the canopy are selected according to the Gaussian integration method (see
 Appendix 1) and at those levels the leaf area index, the amount of absorbed radiation and
 the leaf CO$_{{\rm 2}}$ assimilation is calculated. The total instantaneous assimilation is easily
@@ -623,8 +627,8 @@ assimilation, will be explained in detail. Calculation of the leaf area index wi
 explained in \S \ref{sec:growthofleaves}.
 
 Canopy assimilation is calculated as a weighted average of the assimilation at three
-horizons within the canopy. The leaf area index of the selected horizons can be written as
-(Goudriaan, 1986):
+depths within the canopy. The leaf area index of the selected depths (cumulated from the top of the
+canopy to the selected depth) can be written as (Goudriaan, 1986):
 
 \begin{equation}
 % eq 5.19 a-d
@@ -745,9 +749,25 @@ Where:\\[5pt]
 	I$_{{\rm a}}$ &:& Absorbed amount of the total radiation flux     &   
 \end{tabularx}
 
-The instantaneous gross assimilation rate at light saturation, {\bf A$_{{\rm m}}$} (acronym: {\bf AMAXTB}) is
-crop specific and it is a function of the crop development stage. The initial light use efficiency, {\bf $\epsilon$}
+The instantaneous gross assimilation rate at light saturation, also
+called the maximum leaf CO$_{{\rm 2}}$ assimilation rate, {\bf A$_{{\rm m}}$} (acronym: 
+{\bf AMAXTB}) is a function of the development stage and is crop specific. Note that this
+correction of {\bf A$_{{\rm m}}$} is an empirical way of correcting for decreasing photosynthesis
+rate due to decreasing leaf nitrogen content due to leaf ageing and  translocation of nitrogen
+from leaves to storage organs. The initial light use efficiency, {\bf $\epsilon$}
 (acronym: {\bf EFFTB}), is also crop dependent. It is defined as a function of daily mean temperature. 
+
+An AFGEN table with the development stage as the independent variable is used to describe 
+this dependency (see also \S \ref{sec:DVS}). For an example see figure \ref{fig:AMAXTB}.
+
+\begin{figure}[p]
+	% figure 5.3
+	\centering
+	\includegraphics[width=85mm]{\FigDir/figure_AMAXTB.pdf}
+	\caption{Maximum leaf CO$_{{\rm 2}}$ assimilation the rate as a function of development of
+		the development stage.}
+	\label{fig:AMAXTB}
+\end{figure}
 
 Introducing the absorbed amount of radiation by shaded leaves (eq. \ref{eq:5.22}) into 
 equation \ref{eq:5.23} yields:
@@ -920,39 +940,17 @@ area and the specific pod area (see also \S \ref{sec:growthofleaves} and eq. \re
 stem area and specific pod area are crop specific and should be provided by the user.
 
 
-\subsection{Reduction factors for daily gross assimilation rate}
-\label{sec:DailyGrossPhotosynthesis}
+\subsection{Actual daily gross photosynthesis rate}
+\label{sec:ActualDailyGrossPhotosynthesis}
 
 In the previous section, the assimilation was treated as a function of the intercepted light and of
 photosynthetic crop characteristics such as initial light use efficiency and maximum leaf
-CO$_{{\rm 2}}$ assimilation at light saturation. The value of some crop characteristics are dependent
-on phenological crop stage. In addition, the assimilation process can be hampered by
+CO$_{{\rm 2}}$ assimilation at light saturation. However, the assimilation process can be hampered by
 suboptimum temperatures and/or by reduced availability of CO$_{{\rm 2}}$ due to closure of the leaf
-stomata as means to reduce transpiration. Finally, also nutrient deficiency can cause a reduction
-in the assimilation rate.
+stomata as means to reduce transpiration. 
 
-Thus, the gross assimilation rate depends on development stage, on temperature, on the transpiration rate
-and on plant nutrient status. In this paragraph this dependency will be briefly explained.
+Thus, the gross assimilation rate depends on day-time and night-time temperature as well as on the transpiration rate of the crop. In this paragraph this dependency will be briefly explained.
 
-\subsubsection{Development stage}
-As mentioned before, the instantaneous gross assimilation rate at light saturation, also
-called the maximum leaf CO$_{{\rm 2}}$ assimilation rate, {\bf A$_{{\rm m}}$} (acronym: 
-{\bf AMAXTB}) is a function of the development stage and is crop specific. Note that this
-correction of {\bf A$_{{\rm m}}$} is an empirical way of correcting for decreasing photosynthesis
-rate due to decreasing leaf nitrogen content due to leaf ageing and  translocation of nitrogen
-from leaves to storage organs. 
-
-An AFGEN table with the development stage as the independent variable is used to describe 
-this dependency (see also \S \ref{sec:DVS}). For an example see figure \ref{fig:AMAXTB}.
-
-\begin{figure}[p]
-	% figure 5.3
-	\centering
-	\includegraphics[width=85mm]{\FigDir/figure_AMAXTB.pdf}
-	\caption{Maximum leaf CO$_{{\rm 2}}$ assimilation the rate as a function of development of
-		the development stage.}
-	\label{fig:AMAXTB}
-\end{figure}
 
 \subsubsection{Daytime temperature}
 The maximum leaf CO$_{{\rm 2}}$ assimilation rate, A$_{{\rm m}}$, has to be corrected for sub-optimal average
@@ -971,15 +969,15 @@ The correction factor has to be multiplied with A$_{{\rm m}}$.
 	\label{fig:TMPFTB}
 \end{figure}
 
-\subsubsection{Nighttime temperature}
+\subsubsection{Night-time temperature}
 It should be noted that assimilation is an enzymatic process and such processes are
 temperature dependent (Downes, 1970). However, there seems to be a considerable
 adaption of the assimilation processes to fluctuating and varying temperatures (de Wit {\it et al.}, 1978). 
 A wide temperature range for optimum photosynthetic performance under field
-conditions is observed (Wardlaw, 1974). Low nighttime temperatures also affect the
+conditions is observed (Wardlaw, 1974). Low night-time temperatures also affect the
 assimilation. At night the assimilates, produced during daytime, are transformed into
 structural biomass. This process is hampered by low temperature. If these low temperatures prevail 
-for a several days, the assimilates accumulate in the plant and the assimilation rate diminishes 
+for a several days, the assimilates accumulate in the leaves and the assimilation rate diminishes 
 and ultimately halts.
 
 In the model, this temperature effect is accounted for by introducing a correction factor,
@@ -1030,7 +1028,7 @@ In \S \ref{sec:evapotranspiration} the calculation of the potential, T$_{{\rm p}
 the transpiration, T$_{{\rm a}}$, will be explained.
 
 
-\subsubsection{Photosynthesis in terms of CH$_{{\rm 2}}$O}
+\subsection{Photosynthesis in terms of CH$_{{\rm 2}}$O}
 In the photosynthesis process, CO$_{{\rm 2}}$ is reduced to carbohydrates (CH$_{{\rm 2}}$O) using the energy
 supplied by the absorbed light. The overall chemical reaction of this complex process is:
 
@@ -1057,14 +1055,10 @@ R _{d}^{1} ~=~ A _{d}^{1} \,\,{\frac{30}{44}}
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	R$^{{\rm 1}}$$_{{\rm d}}$ &:& Gross daily CH$_{{\rm 2}}$O assimilation rate 
-	(not corrected for water stress) &   [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
+	 &   [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
 	A$^{{\rm 1}}$$_{{\rm d}}$ &:& Gross daily CO$_{{\rm 2}}$ assimilation rate 
-	(see eq. \ref{eq:5.11}) (corrected for low minimum temperature)   &    [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\   
+	(see eq. \ref{eq:5.11})  &    [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\   
 \end{tabularx}
-
-As mentioned earlier, the gross daily CO$_{{\rm 2}}$ assimilation rate, A$^{{\rm 1}}$$_{{\rm d}}$, 
-can be calculated by multiplying the total hourly instantaneous assimilation rate (eq. \ref{eq:5.31}) 
-with the day length (eq. \ref{eq:AstroDaylength}). 
 
 
 \section{Maintenance respiration}
@@ -1089,7 +1083,7 @@ This maintenance respiration consumes roughly 15 - 30\% of the carbohydrates pro
 by a crop in a growing season (Penning de Vries {\it et al.}, 1979). This indicates the
 importance of accurate quantification of this process in the model.
 
-\subsection{Maintenance respiration as a function of the weight of dry matter}
+\subsection{Maintenance respiration as a function of plant biomass}
 The maintenance costs may be estimated on the basis of the quantities of proteins and
 minerals present in the biomass and on crop metabolic activity, as presented by De Wit {\it et
 	al.} (1978). This method, however, requires information on the nitrogen and mineral
@@ -1131,8 +1125,11 @@ The calculated maintenance respiration rate (eq. \ref{eq:5.39}) has to be correc
 This correction factor is crop specific and is defined as a function of development stage. 
 An AFGEN table (acronym: {\bf RFSETB}) with the development stage as
 independent variable, is used to describe this dependency. The maintenance respiration
-should be multiplied with this factor.  Note that differences in nitrogen contents in the different organs 
-due to aging of the plant may cause differences in the maintenance coefficients. 
+should be multiplied with this factor.  Note that in field conditions differences in nitrogen 
+content in the different organs due to aging of the plant may cause differences in the maintenance coefficients. This effect could be accounted for by relating 
+the maintenance coefficients to the N content of the tissues (van Keulen \& Seligman, 1987)
+but this is not accounted for in WOFOST 7.2.
+
 
 \subsection{Dependency of the maintenance respiration on temperature}
 Higher temperatures accelerate the turnover rates in plant tissue and hence the costs of
@@ -1172,11 +1169,7 @@ various organs, the relative maintenance rate per organ and the temperature. It 
 exceed the actual gross assimilation rate. It is assumed that the vegetation will not be
 "self-consuming" in terms of carbohydrates. Actual gross assimilation rate minus 
 maintenance respiration rate results in the amount of assimilates available for conversion into
-structural material. When the crop ages, its metabolic activity and therefore its
-maintenance requirements decreases. This effect could be accounted for by relating 
-the maintenance coefficients to the N content of the tissues (van Keulen \& Seligman, 1987)
-but this is not accounted for in WOFOST 7.2.
-
+structural material.
 
 \section{Transpiration and evaporation}
 \label{sec:evapotranspiration}
