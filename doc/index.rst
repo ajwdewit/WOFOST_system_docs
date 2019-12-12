@@ -15,7 +15,7 @@ This page provides access to the theory and system description of the WOFOST cro
 It is  a background document independent of any implementation of WOFOST. 
 
 Given the complexity of the document it is written in LaTeX and is therefore only available as a PDF 
-download here: :download:`_static/WOFOST_system_doc.pdf`
+download here: :download:`_static/WOFOST_system_description.pdf`
 
 For a generic introduction to the WOFOST model see:
 

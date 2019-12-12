@@ -246,3 +246,6 @@ TSWLatexianTemp*
 
 # sphinx build files
 doc/_build
+
+# Main.pdf in Latex folder
+latex/main.pdf

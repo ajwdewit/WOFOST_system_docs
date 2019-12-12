@@ -1,6 +1,6 @@
 @ECHO OFF
 echo "Copying Latex PDF output to _static"
-copy ..\latex\main.pdf _static\WOFOST_system_doc.pdf
+copy ..\latex\main.pdf _static\WOFOST_system_description.pdf
 pushd %~dp0
 
 REM Command file for Sphinx documentation
