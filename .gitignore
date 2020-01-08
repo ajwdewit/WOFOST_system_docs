@@ -249,3 +249,5 @@ doc/_build
 
 # Main.pdf in Latex folder
 latex/main.pdf
+*.hst
+*.ver
