@@ -11,7 +11,7 @@ Welcome to the WOFOST system description
    :align: center
    :target: http://wageningenur.nl/wofost
    
-This page provides access to the theory and system description of the WOFOST crop simulation model.
+This page provides access to the theory and system description of the WOFOST cropping systems model.
 It is  a background document independent of any implementation of WOFOST. 
 
 Given the complexity of the document it is written in LaTeX and is therefore only available as a PDF 
