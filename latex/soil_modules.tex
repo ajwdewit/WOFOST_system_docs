@@ -2,34 +2,11 @@
 
 \section{Water balance modules}
 
-Plant growth involves intake of atmospheric CO$_{{\rm 2}}$ through stomatal openings in the
-epidermis. Most of the water that plants take up from the soil is again lost to the
-atmosphere by transpiration through the same openings. The daily turnover can be
-considerable: transpiration from 0.4 cm of water from a crop surface on a clear sunny
-day corresponds with a water loss from the root zone of than 40.000 kg ha$^{{\rm -1}}$ 
-d$^{{\rm -1}}$. If soil
-moisture take up by the roots is not replenished, the soil will dry out to such an extent
-that the plants wilt and - ultimately - die.
+Plant growth involves intake of atmospheric CO$_{{\rm 2}}$ through stomatal openings in the epidermis. Most of the water that plants take up from the soil is again lost to the atmosphere by transpiration through the same openings. The daily turnover can be considerable: transpiration from 0.4 cm of water from a crop surface on a clear sunny day corresponds with a water loss from the root zone of 40.000 kg ha$^{{\rm -1}}$ 
+d$^{{\rm -1}}$. If soil moisture take up by the roots is not replenished, the soil will dry out to such an extent that the plants wilt and - ultimately - die.
 
-The tenacity with which the soil retains its water is equalled by the suction which the
-roots must exert to be able to take up soil moisture. This suction known as the soil
-moisture potential or 'matric suction', can be measured. In hydrology, the potential is
-usually used and is expressed as energy unit per weight of soil water, with the dimension
-of length (van Bakel, 1981). An optimum range exists within which the plant takes up
-water freely. Above or below this level the plant senses stress. It reacts by actively
-curbing its daily water consumption through partial or complete closure of the stomata.
-The consequence is evident: this stomatal closure interferes with CO$_{{\rm 2}}$ intake and 
-reduces assimilation and, consequently, dry matter production.
+A crop growth simulation model must therefore keep track of the soil water balance which compares for a given period of time, incoming water in the rooted soil with outgoing water and quantifies the difference between the two as a change in the amount of soil moisture stored.
 
-A crop growth simulation model must therefore keep track of the soil moisture potential
-to determine when and to what degree a crop is exposed to water stress. This is commonly 
-done with the aid of a water balance equation, which compares for a given period of
-time, incoming water in the rooted soil with outgoing water and quantifies the difference
-between the two as a change in the amount of soil moisture stored.
-
-Therefore the purpose of the soil water balance calculations is to estimate the daily value
-of the actual soil moisture content, which influences soil moisture uptake and crop
-transpiration.
 
 \begin{figure}[p]
 	%Fig. 6.1
@@ -39,14 +16,14 @@ transpiration.
 	\label{fig:WatBalSchematic}
 \end{figure}
 
-The actual soil moisture content can be established according to (Driessen, 1986):
+The actual root zone soil moisture content can be established according to (Driessen, 1986):
 
 \stepcounter{equation}
 \begin{align}
 % equations 6.1a-b
 \label{eq:6.1}
-\theta_{t~} &= {\frac{IN _{up} ~+~(IN _{low} ~-~T _{a} )}{RD}} \Delta t \subeqn \\[1em]
-IN_{up} &= P~+~I _{e} ~-~E _{s} ~+~SS _{t} \, /\Delta t-~SR  \subeqn  \\[1em]
+theta_{t~} &= theta_{t-1~} + {\frac{IN _{up} ~+~IN _{low} ~-~T _{a}}{RD}} \Delta t \subeqn \\[1em]
+IN_{up} &= P~+~I _{e} ~-~E _{s} ~+~ \delta SS_{t} \, /\Delta t-~SR  \subeqn  \\[1em]
 IN_{low} &= CR~-~Perc \subeqn
 \end{align}
 
@@ -61,15 +38,15 @@ Where:\\[5pt]
 	T$_{{\rm a}}$ &:& Actual transpiration rate of crop
 	& [cm d$^{{\rm -1}}$]\\
 	RD &:& Actual rooting depth  & [cm]\\
-	P &:& Precipitation intensity  & [cm d$^{{\rm -1}}$]\\
+	P &:& Precipitation rate  & [cm d$^{{\rm -1}}$]\\
 	I$_{{\rm e}}$ &:& Effective daily irrigation  & [cm d$^{{\rm -1}}$]\\
 	E$_{{\rm s}}$ &:& Soil evaporation rate   & [cm d$^{{\rm -1}}$]\\
-	SS$_{{\rm t}}$ &:& Surface storage  & [cm]\\
+	$\delta SS_{{\rm t}}$ &:& Surface storage  & [cm]\\
 	SR &:& Rate of surface runoff  & [cm d$^{{\rm -1}}$]\\
 	CR &:& Rate of capillary rise  & [cm d$^{{\rm -1}}$]\\
 	Perc &:& Percolation rate  & [cm d$^{{\rm -1}}$]\\
 	$\Delta$t &:& Time step  & [d]\\
-	Z$_{{\rm t}}$ &:& Depth of groundwater table (see figure \ref{fig:WatBalSchematic})  & [cm]\\
+%	Z$_{{\rm t}}$ &:& Depth of groundwater table (see figure \ref{fig:WatBalSchematic})  & [cm]\\
 \end{tabularx}
 
 Processes directly affecting soil moisture content of the root zone can be defined as:
@@ -82,35 +59,18 @@ Processes directly affecting soil moisture content of the root zone can be defin
 	\item capillary rise is upward transport into the rooted zone.
 \end{itemize}
 
-The water balance equation has to be solved for each time interval in the crop growth cycle.
+The water balance equation has to be solved for each time interval during the crop growth cycle.
 
-For the calculation of potential production the soil moisture content is
-assumed to be at field capacity and no calculations have to be performed to simulate the
-water balance in the soil. Only the crop water requirements are quantified as the sum of 
-crop transpiration and evaporation from the shaded soil under the canopy. 
+For the calculation of potential production the soil moisture content is assumed to be at field capacity and no calculations need to be performed to simulate the water balance in the soil. Only the crop water requirements are quantified as the sum of crop transpiration and evaporation from the shaded soil under the canopy. 
 
-For the calculation of the water limited production two different soil water balances are
-distinguished. The first water balance (called \emph{Classic water balance}) applies to a freely draining soil, 
-where groundwater is so deep that it cannot have influence on the soil moisture content in the rooting zone. 
-The soil profile is divided in two compartments, the rooted zone and the lower zone between actual rooting
-depth and maximum rooting depth. The subsoil below the maximum rooting depth is not defined. The second
-zone merges gradually with the first zone as the roots grow deeper towards the maximum rooting depth. 
-This water balance applies to (regional) applications with limited information on soil properties.
+For the calculation of the water limited production two different soil water balances are distinguished. The first water balance (called \emph{Classic water balance}) applies to a freely draining soil, where groundwater is so deep that it cannot have influence on the soil moisture content in the rooting zone. The soil profile is divided in two compartments, the rooted zone and the lower zone between actual rooting depth and maximum rooting depth. The subsoil below the maximum rooting depth is not defined. The second zone merges gradually with the first zone as the roots grow deeper towards the maximum rooting depth. This water balance applies to (regional) applications with limited information on soil properties.
 
-Second, the WOFOST implementation connected to the SWAP model has a detailed water balance which 
-including multiple soil layers and variable integration time steps to account for highly non-linear 
-processes in the soil. Besides estimating water availability, SWAP also deals with soil temperature and 
-solute transport which allows to make 
-detailed simulations of the behaviour of water and solutes in the soil and its impact on plant growth.
-The SWAP water balance is not treated in this manual as SWAP has its own set of documentation 
-\footnote{http://www.swap.alterra.nl} where the theory and usage of the model is described.
+Second, the WOFOST implementation connected to the SWAP model has a detailed water balance including multiple soil layers and variable integration time steps to account for highly non-linear processes in the soil. Besides estimating water availability, SWAP also deals with soil temperature and solute transport which allows to make detailed simulations of the behaviour of water and solutes in the soil and its impact on plant growth.The SWAP water balance is not treated in this manual as SWAP has its own set of documentation \footnote{http://www.swap.alterra.nl} where the theory and usage of the model is described.
 
 \subsection{Classic waterbalance: potential production}
 \label{sec:WATPP}
 
-The purpose of the water balance for potential production is to quantify the crop water requirements for
-continuous growth without drought stress. It is assumed that the soil is permanently at
-field capacity.
+The purpose of the water balance for potential production is to quantify the crop water requirements for continuous growth without drought stress. It is assumed that the soil is permanently at field capacity.
 
 \begin{equation}
 \label{eq:6.15}
@@ -123,12 +83,7 @@ Where:\\[5pt]
 	$\theta$$_{{\rm fc}}$ &:& Soil moisture content at field capacity & [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
 \end{tabularx}
 
-Rainfall, irrigation, capillary rise and drainage are not taken into account. This does not
-mean that these processes will not occur. The result of these processes will be a soil
-moisture content at field capacity level. The only two processes to consider are evaporation of 
-the surface and transpiration of the crop. The calculation of the crop transpiration is described
-under section  \S \ref{sec:evapotranspiration} while evaporation is treated in the same
-way as in the water balance for free drainage conditions (\S \ref{sec:evaporation}).
+Rainfall, irrigation, capillary rise and drainage are not taken into account. The only two processes to consider are evaporation of the surface and transpiration of the crop. The calculation of the crop transpiration is described under section  \S \ref{sec:evapotranspiration} while evaporation is treated in the same way as in the water balance for free drainage conditions (\S \ref{sec:evaporation}).
 
 %In the previous paragraph the
 %calculation of these processes is described in detail.
@@ -174,43 +129,18 @@ way as in the water balance for free drainage conditions (\S \ref{sec:evaporatio
 \subsection{Classic Water balance: water-limited production under free drainage conditions}
 \label{sec:WATFD}
 
-This soil module computes the variables of the soil water balance in the 
-water-limited production scenario for a freely draining soil. No influence from
-groundwater is assumed. The purpose is to quantify the crop water requirements for
-continuous growth with either drought stress or water excess, and to quantify a possible
-reduction of the crop transpiration rate, leading to a reduced growth.
+This soil module computes the variables of the soil water balance in the water-limited production scenario for a freely draining soil. No influence from groundwater is assumed. The purpose is to quantify the crop water use while subject tot either drought stress or water excess, and to quantify a possible reduction of the crop transpiration rate, leading to a reduced growth.
 
-For the rooted zone the water balance equation is solved every daily time step. At the
-upper boundary, processes comprise the infiltration of water from precipitation or
-irrigation, evaporation from the soil surface and uptake of water and transpiration by the
-crop. If rainfall intensity exceeds the infiltration and surface storage capacity of the soil,
-water runs off. Water can be stored in the soil till the field capacity is reached. Additional
-water percolates beyond the lower boundary of the rooting zone.
-The flow rates are limited by the maximum percolation rate of the root zone and the
-maximum percolation rate of the water to the subsoil.
+For the rooted zone the water balance equation is solved every daily time step. At the upper boundary, processes comprise the infiltration of water from precipitation or irrigation, evaporation from the soil surface and uptake of water and transpiration by the crop. If rainfall intensity exceeds the infiltration and surface storage capacity of the soil, water runs off. Water can be stored in the soil till the field capacity is reached. Additional water percolates beyond the lower boundary of the rooting zone. The flow rates are limited by the maximum percolation rate of the root zone and the maximum percolation rate of the water to the subsoil.
 
-The textural profile of the soil is conceived homogeneous. Initially the soil profile
-consists of three layers (zones):
+The textural profile of the soil is conceived homogeneous. Initially the soil profile consists of three layers (zones):
 \begin{itemize}
 	\item the rooted zone between soil surface and actual rooting depth
 	\item the lower zone between actual rooting depth and maximum rooting depth
 	\item the subsoil below maximum rooting depth
 \end{itemize}
 
-The extension of the root zone from initial rooting depth to maximum rooting depth is
-described in \S \ref{sec:rootgrowth}. Its effect on the soil moisture content is accounted 
-for in this soil water
-balance calculation. From the moment that the maximum rooting depth is reached the soil
-profile is described as a two layer system (Driessen, 1986). The lower zone no longer
-exists.
-
-The water balance is driven by rainfall, possibly buffered as surface storage, and
-evapotranspiration. The processes considered are infiltration, soil water retention,
-percolation and the loss of water beyond the maximum root zone.
-
-As mentioned earlier, no groundwater influence is assumed, therefore capillary rise is not
-accounted for. Only downward flow, evaporation from the soil surface and transpiration
-are included in the calculations. 
+The extension of the root zone from initial rooting depth to maximum rooting depth is described in \S \ref{sec:rootgrowth}. Its effect on the soil moisture content is accounted for in this soil water balance calculation. From the moment that the maximum rooting depth is reached the soil profile is described as a two layer system (Driessen, 1986). The lower zone no longer exists.
 
 \subsubsection{Initial soil water content and initial soil water amount}
 
@@ -224,24 +154,17 @@ calculated as:
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
-	$\theta$$_{{\rm t}}$ &:& Actual soil moisture content in rooted z
+	$\theta_{{\rm t}}$ &:& Actual soil moisture content in rooted z
 	one  & [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
-	$\theta$$_{{\rm wp}}$ &:& Soil moisture content at wilting   & [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
-	W$_{{\rm av}}$ &:& Initial amount of available soil moisture 
-	in excess of $\theta$$_{{\rm wp}}$ & [cm]\\
+	$\theta_{{\rm wp}}$ &:& Soil moisture content at wilting   & [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
+	W$_{{\rm av}}$ &:& Initial amount of available water in the soil 
+	in excess of $\theta_{{\rm wp}}$ & [cm]\\
 	RD &:& Actual rooting depth (see \S 5.5) & [cm]\\
 \end{tabularx}
 
-It should be mentioned that the initial actual soil moisture content, $\theta$$_{{\rm t}}$, cannot be lower
-than the soil moisture content at wilting point. In case the crop cannot develop airducts,
-the initial soil moisture content cannot be higher than the soil moisture content at field
-capacity. If the crop can develop airducts the initial soil moisture content cannot exceed
-the soil porosity. {\bf W$_{{\rm av}}$} (acronym: {\bf WAV}), the initial amount of available 
-soil moisture in excess of $\theta$$_{{\rm wp}}$ should be provided by the user. 
+It should be mentioned that the initial actual soil moisture content, $\theta_{{\rm t}}$ in WOFOST, cannot be lower than the soil moisture content at wilting point. In case the crop cannot develop airducts, the initial soil moisture content cannot be higher than the soil moisture content at field capacity. If the crop can develop airducts the initial soil moisture content cannot exceed the soil porosity. {\bf W$_{{\rm av}}$} (acronym: {\bf WAV}), the initial amount of available soil moisture in excess of $\theta_{{\rm wp}}$ should be provided by the user. 
 
-Multiplying the actual soil moisture content with the rooting depth yields the initial
-amount of water in the rooted zone. The initial amount of soil moisture in the lower zone,
-the zone between the rooted zone and the maximum rooting depth, can be calculated as:
+Multiplying the actual soil moisture content with the rooting depth yields the initial amount of water in the rooted zone. The initial amount of soil moisture in the lower zone, the zone between the rooted zone and the maximum rooting depth, can is as:
 
 \begin{equation}
 \label{eq:6.19}
@@ -261,69 +184,42 @@ Where:\\[5pt]
 	& [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
 \end{tabularx}
 
-The soil moisture content of the lower zone is also limited by the field capacity in case
-the crop cannot develop airducts, else the soil moisture content is limited by the soil
-porosity. In the model, initially, the variable D$_{{\rm slr}}$, days since last rain, is set 
-to one. If the
-actual soil moisture content is halfway between the field capacity and wilting point a
-value of five days is assumed. 
+The soil moisture content of the lower zone is also limited by the field capacity in case the crop cannot develop airducts, else the soil moisture content is limited by the soil porosity. 
+
+In the model, initially, the variable D$_{{\rm slr}}$, days since last rain, is set  to one. If the actual soil moisture content is halfway between the field capacity and wilting point a value of five days is assumed. 
 
 \subsubsection{Evaporation}
 \label{sec:evaporation}
-The evaporation depends on the amount of available water in the soil and the infiltration
-capacity of the soil. If the water layer on the surface, the so called surface storage, 
-exceeds 1 cm, the actual evaporation rate from the soil is set to zero and the actual
-evaporation rate from the surface water is equal to the maximum evaporation from a
-shaded water surface.
+The evaporation from the surface below the canopy to the atmosphere can either come from a soil surface or a water surface. It also depends on the amount of available water in the soil and the infiltration capacity of the soil. If the water layer on the surface, the so called surface storage, exceeds 1 cm, the actual evaporation rate from the soil is set to zero and the actual evaporation rate from the surface water is equal to the maximum evaporation from a shaded water surface. If the surface storage is less than 1 cm and the infiltration rate of the previous day exceeds 1 cm d$^{{\rm -1}}$, the actual evaporation rate from the surface water is set to zero and the actual evaporation rate from the soil is equal to the maximum evaporation from a shaded soil surface. 
 
-If the surface storage is less than 1 cm and the infiltration rate of the previous day
-exceeds 1 cm d$^{{\rm -1}}$, the actual evaporation rate from the surface water is set to zero and the
-actual evaporation rate from the soil is equal to the maximum evaporation from a shaded
-soil surface. All water on the surface can infiltrate within one day. The value of the
-variable days since last rain, D$_{{\rm slr}}$, is reset to unity.
-
-If the infiltration rate is less than 1 cm d$^{{\rm -1}}$, the amount of infiltrated water is considered
-too small to justify a reset of the parameter D$_{{\rm slr}}$ and the evaporation rate decreases as the
-top soil starts drying. The reduction of the evaporation is thought to be proportional to the
-square root of time (Stroosnijder, 1987, 1982). The evaporation can be calculated as:
+Without water on the soil surface, the variable D$_{{\rm slr}}$, days since last rain, is use to control the decay in surface evaporation rate due to the drying out of the soil surface. The reduction of the evaporation is thought to be proportional to the square root of time (Stroosnijder, 1987, 1982). The initial value of D$_{{\rm slr}}$ depends on the moisture content in the top layer. It is set to value of five days if the soil moisture content is halfway between the field capacity and wilting point, otherwise a value of one day is used. The value of the variable days since last rain, D$_{{\rm slr}}$ increases every day thereby decreasing the actual soil evaporation rate. Its value is reset to one if the infiltration rate of the previous is larger than 1 cm d$^{{\rm -1}}$, The soil evaporation is calculated as:
 
 \begin{equation}
-\label{eq:6.20}
-E _{s} ~=~ E _{s,\max } ( \sqrt{D _{slr} } ~-~ \sqrt{D _{slr} \, -\, 1} )
+\label{eq:Es}
+E_{s} ~=~ E_{s,\max } ( \sqrt{D_{slr} } ~-~ \sqrt{D_{slr} \, -\, 1} )
 \end{equation}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	E$_{{\rm s}}$ &:& Evaporation rate from a shaded soil surface  & [cm d$^{{\rm -1}}$]\\
 	E$_{{\rm s,max}}$ &:& Maximum evaporation rate from a shaded soil
-	surface (see eq. \ref{eq:6.7})  & [cm d$^{{\rm -1}}$]\\
+	surface (see eq. \ref{eq:Esmax})  & [cm d$^{{\rm -1}}$]\\
 	D$_{{\rm slr}}$ &:& Days since last rain  & [d]\\
 \end{tabularx}
 
 When a small amount of water has infiltrated, or rather wetted the soil surface, this
 amount can be evaporated the same day, irrespective of D$_{{\rm slr}}$. Therefore, the actual
-evaporation from the soil surface, as calculated according to equation \ref{eq:6.20}, should be
+evaporation from the soil surface, as calculated according to equation \ref{eq:Es}, should be
 corrected for this amount of water infiltrating the soil. This amount should be added to
 the actual evaporation rate. However, it should be noted that the actual evaporation never
 can exceed the maximum evaporation rate.
-
-\subsubsection{Precipitation}
-Not all the precipitation will reach the surface. A fraction will be intercepted by leaves,
-stems, etc. From the amount of precipitation which reaches the soil surface, not all will
-infiltrate. A part runs off. Runoff from a field can be 0-20 percent, and even higher on
-unfavorable surfaces (Stroosnijder \& Kon\'{e}, 1982). In the model, it is assumed that a
-fixed fraction of the precipitation will not infiltrate on the same day. This fraction can be
-reduced in situations with relatively small amounts of rainfall. In the model a reduction
-factor is defined as function of the amount of rainfall (van Diepen {\it et al}., 1988). See 
-equation \ref{eq:6.26}. Note that the non infiltrating 
-fraction refers to rainfall only. Irrigation water is assumed to infiltrate freely.
 
 \subsubsection{Percolation}
 If the soil moisture content of the root zone is above field capacity, water percolates to
 the lower part of the potentially rootable zone and to the subsoil. In the model, a clear
 distinction is made between percolation from the actual rootzone to the so-called lower
 zone, and percolation from the lower zone to the subsoil. The former is called Perc and
-the latter is called Loss. The percolation rate from the rooted zone can be calculated as:
+the latter is called Loss. The percolation rate from the rooted zone is calculated as:
 
 \begin{equation}
 \label{eq:6.21}
@@ -333,16 +229,16 @@ Perc  ~=~{\frac{W _{rz} \, -\, W _{rz,\, fc} }{\Delta t}} ~-~ T _{a} ~-~ E _{s}
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	Perc &:& Percolation rate from the root zone to the lower zone  & [cm d$^{{\rm -1}}$]\\
-	W$_{{\rm rz}}$ &:& Amount of soil moisture in the root zone (see eq. \ref{eq:6.33}a)  & [cm]\\
+	W$_{{\rm rz}}$ &:& Amount of soil moisture in the root zone  & [cm]\\
 	W$_{{\rm rz,fc}}$ &:& Equilibrium amount of soil moisture in the root
 	zone (see eq. \ref{eq:6.22})  & [cm]\\
 	$\Delta$t &:& Time step  & [d]\\
 	T$_{{\rm a}}$ &:& Actual transpiration rate (see eq. \ref{eq:6.14})  & [cm d$^{{\rm -1}}$]\\
 	E$_{{\rm s}}$ &:& Evaporation rate from a shaded soil surface 
-	(see eq. \ref{eq:6.7}  and \ref{eq:6.20})  & [cm d$^{{\rm -1}}$]\\
+	(see eq. \ref{eq:Es})  & [cm d$^{{\rm -1}}$]\\
 \end{tabularx}
 
-The equilibrium amount of soil moisture in the root zone can be calculated as the soil
+The equilibrium amount of soil moisture in the root zone is calculated as the soil
 moisture content at field capacity times the depth of the rooting zone:
 
 \begin{equation}
@@ -361,14 +257,13 @@ Where:\\[5pt]
 The percolation rate is limited by the conductivity of the wet soil (acronym: {\bf SOPE}) in the
 same way as the infiltration is limited. The conductivity is soil specific and should be
 given by the user. Note that the percolation from the root zone to the lower zone can be
-limited by the up take capacity of the lower zone. Therefore, the value calculated with 
+limited by the uptake capacity of the lower zone. Therefore, the value calculated with 
 equation \ref{eq:6.21} is preliminary. The capacity should first be checked.
 
-The percolation from the lower zone to the subsoil, the so-called Loss, should take the
+The loss of water from the lower zone to the subsoil, the so-called Loss, should take the
 amount of water in the lower zone into account. If the amount of water in the lower zone
 is less than the equilibrium amount of soil moisture, a part of the percolating water will
-be retained and the percolation rate will be reduced. The loss of water from the lower end
-of the maximum root zone can be calculated as:
+be retained and the percolation rate will be reduced, thus:
 
 \begin{equation}
 \label{eq:6.23}
@@ -379,17 +274,13 @@ Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	Loss &:& Percolation rate from the lower zone to the subsoil   & [cm d$^{{\rm -1}}$]\\
 	Perc &:& Percolation rate from root zone to lower zone (see eq. \ref{eq:6.21})  & [cm d$^{{\rm -1}}$]\\
-	W$_{{\rm lz}}$ &:& Amount of soil moisture in the lower zone (see eq. \ref{eq:6.33}b)  & [cm]\\
+	W$_{{\rm lz}}$ &:& Amount of soil moisture in the lower zone & [cm]\\
 	W$_{{\rm lz,fc}}$ &:& Equilibrium amount of soil moisture in the
 	lower zone (see eq. \ref{eq:6.24})  & [cm]\\
 	$\Delta$t &:& Time step   & [d]\\
 \end{tabularx}
 
-The loss of water from the potentially rootable zone, is also limited by the maximum
-percolation rate of the subsoil. This maximum percolation rate (acronym: {\bf KSUB}) is soil
-specific and should be provided by the user. The equilibrium amount of soil moisture in
-the lower zone can be calculated as the soil moisture content at field capacity times the
-depth of the root zone:
+The loss of water from the potentially rootable zone, is also limited by the maximum percolation rate of the subsoil. This maximum percolation rate (acronym: {\bf KSUB}) is soil specific and should be provided by the user. The equilibrium amount of soil moisture in the lower zone can be calculated as the soil moisture content at field capacity times the depth of the root zone:
 
 \begin{equation}
 \label{eq:6.24}
@@ -404,15 +295,9 @@ Where:\\[5pt]
 	RD &:& Actual rooting depth  & [cm]\\
 \end{tabularx}
 
-The saturated soil conductivity (acronym: {\bf K0}) is soil specific. In the
-model, K0 is calculated from the pF curve assuming $pF = -1.0$ (i.e. a hydraulic head of 0.1
-cm) The percolation rate from the lower zone to the sub soil is not to exceed this value
-(van Diepen {\it et al}., 1988). 
+The saturated soil conductivity (acronym: {\bf K0}) is soil specific. In the model, K0 is calculated from the pF curve assuming $pF = -1.0$ (i.e. a hydraulic head of 0.1 cm) The percolation rate from the lower zone to the sub soil is not to exceed this value (van Diepen {\it et al}., 1988). 
 
-As mentioned before, the value calculated with equation \ref{eq:6.21}, should be regarded as
-preliminary. The storage capacity of the receiving layer may become limiting. The
-storage capacity of the lower zone, also called the uptake capacity, is the amount of air
-plus the loss (van Diepen {\it et al}., 1988). The storage capacity can de defined as:
+As mentioned before, the value calculated with equation \ref{eq:6.21}, should be regarded as preliminary. The storage capacity of the receiving layer may become limiting. The storage capacity of the lower zone, also called the uptake capacity, is the amount of air plus the loss (van Diepen {\it et al}., 1988). The storage capacity can de defined as:
 
 \begin{equation}
 \label{eq:6.25}
@@ -434,14 +319,14 @@ The percolation to the lower part of the potentially rootable zone can not excee
 uptake capacity of the lower zone. Therefore the percolation rate is equal to the minimum
 of the calculated percolation rate (eq. \ref{eq:6.21}) and the uptake.
 
-\subsubsection{Preliminary infiltration}
+\subsubsection{Preliminary calculation of the infiltration rate}
 The infiltration rate depends on the amount of available water and the infiltration capacity
-of the soil. If the actual surface storage is less then or equal to 0.1 cm, the preliminary
+of the soil. If the actual surface storage is less than or equal to 0.1 cm, the preliminary
 infiltration capacity is simply described as:
 
 \begin{equation}
 \label{eq:6.26}
-IN_{p} =~ (\, 1\, -\, F _{I} \, C _{I} \, )\, P~+~ I _{e~} +~ SS _{\frac{t}{ \Delta t}} 
+IN_{p} =~ (\, 1\, -\, F _{I} \, C _{I} \, )\, P~+~ I _{e~} +~ \frac{SS_{t}}{ \Delta t} 
 \end{equation}
 
 Where:\\[5pt]
@@ -450,7 +335,7 @@ Where:\\[5pt]
 	F$_{{\rm I}}$ &:& Maximum fraction of rain not infiltrating during time step t  & [-]\\
 	C$_{{\rm I}}$ &:& Reduction factor applied to F$_{{\rm I}}$ as a function of the 
 	precipitation intensity  & [-]\\
-	P &:& Precipitation intensity  & [cm d$^{{\rm -1}}$]\\
+	P &:& Precipitation rate  & [cm d$^{{\rm -1}}$]\\
 	I$_{{\rm e}}$ &:& Effective irrigation  & [cm d$^{{\rm -1}}$]\\
 	SS$_{{\rm t}}$ &:& Surface storage at time step t (see eq. \ref{eq:6.29})  & [cm]\\
 	$\Delta$t &:& Time step  & [d]\\
@@ -462,7 +347,7 @@ can be either set to a fixed value or be made variable by multiplying F$_{{\rm I
 with a precipitation dependent reduction factor {\bf C$_{{\rm I}}$} (acronym: {\bf NINFTB}). 
 If the fraction is variable, it means that it is maximum for high rainfall amounts, and 
 that it will be reduced for low rainfall. The user should provide F$_{{\rm I}}$. 
-Values of the C$_{{\rm I}}$ table are included in the model and
+Tabulated values of C$_{{\rm I}}$ are included in the model and
 are assumed to be fixed. The infiltration rate calculated is preliminary, as the storage
 capacity of the soil is not yet taken into account. 
 
@@ -485,7 +370,7 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step  & [d]\\
 \end{tabularx}
 
-However, the infiltration rate is hampered by the conductivity of the soil. The calculated
+However, the calculated infiltration rate is hampered by the conductivity of the soil. The calculated
 infiltration rate cannot exceed the conductivity of the soil, which is used as an infiltration
 limit. The conductivity of the soil (acronym: {\bf SOPE}) is soil specific and should be given
 by the user.
@@ -493,7 +378,7 @@ by the user.
 \subsubsection{Adjusted infiltration}
 The total loss of water from the root zone can now be calculated as the sum of the
 transpiration, the evaporation and the percolation. The sum of this loss and the available
-pore space in the root zone define the maximum infiltration rate. The preliminary
+pore space in the root zone define the maximum infiltration rate. The 
 infiltration rate cannot exceed this value. The maximum possible infiltration rate is given
 by:
 
@@ -516,12 +401,17 @@ Where:\\[5pt]
 	Perc &:& Percolation rate from root zone to lower zone  & [cm d$^{{\rm -1}}$]\\
 \end{tabularx}
 
+Finally, the adjusted infiltration rate is calculated as:
+
+\begin{equation}
+\label{eq:INact}
+IN ~=~ Min(IN_{p}, IN_{\max}, SOPE)
+\end{equation}
+
+
 \subsubsection{Surface runoff}
 
-Surface runoff is also taken into account by defining a maximum value for the surface
-storage. If the surface storage exceeds the maximum value for surface storage the
-exceeding amount of water will run off. The surface storage at time step t can be
-calculated as:
+Surface runoff is taken into account by defining a maximum value for the surface storage. If the surface storage exceeds the maximum value for surface storage the exceeding amount of water will run off. The surface storage at time step t can be calculated as:
 
 \begin{equation}
 \label{eq:6.29}
@@ -577,13 +467,13 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step  & [d]\\
 \end{tabularx}
 
-Due to extension of the roots into the lower zone, extra soil moisture becomes available.
-The amount of the extra soil moisture in the new rootzone and the amount of water in the
+Due to extension of the roots into the lower zone, additional soil moisture becomes available.
+The amount of the extra soil moisture in the new root zone and the amount of water in the
 reduced lower zone can be calculated as:
 
 \begin{equation}
 \label{eq:6.32}
-\Delta W _{rz} ~=~\Delta W _{lz} ~=~ W _{lz} \,{\frac{ RD _{t} \, -\, RD _{t-1} }{RD _{\max } \, -\, RD _{t-1} }}
+\Delta W_{rz} ~=~\Delta W_{lz} ~=~ -\, W_{lz} \,{\frac{RD_{t} \, -\, RD_{t-1} }{RD_{\max} \, -\, RD_{t-1}}}
 \end{equation}
 
 Where:\\[5pt]
@@ -591,17 +481,18 @@ Where:\\[5pt]
 	RD$_{{\rm t}}$ &:& Rooting depth at time step t  & [cm]\\
 	RD$_{{\rm t-1}}$ &:& Rooting depth at time step t-1  & [cm]\\
 	RD$_{{\rm max}}$ &:& Maximum rooting depth  & [cm]\\
-	W$_{{\rm lz}}$ &:& Amount of soil moisture in the lower zone (see eq. \ref{eq:6.33}b)  & [cm]\\
+	W$_{{\rm lz}}$ &:& Amount of soil moisture in the lower zone & [cm]\\
 	$\Delta$W$_{{\rm rz}}$ &:& Change of the amount of soil moisture in the root zone  & [cm]\\
 	$\Delta$W$_{{\rm lz}}$ &:& Change of the amount of soil moisture in the lower zone  & [cm]\\
 \end{tabularx}
+
+Note that equation ref{eq:6.32} will only be executed when there is a root growth ($RD_{t} \, -\, RD_{t-1} > 0$) avoiding a division by zero when the roots have reached their maximm depth.
 
 With equation \ref{eq:6.31} the actual amount of water in the root zone and in the lower zone can
 be calculated according to:
 
 \stepcounter{equation}
 \begin{align}
-\label{eq:6.33}
 W _{rz,t} ~=~ W _{rz, t-1} ~+~ \Delta W _{rz} \subeqn  \\
 W _{lz,t} ~=~ W _{lz, t-1} ~\, +~ \Delta W _{lz} \subeqn
 \end{align}
@@ -623,7 +514,7 @@ The actual soil moisture content can now be calculated according to (see also eq
 
 \begin{equation}
 \label{eq:6.34}
-\theta _{t} ~=~ W _{\frac{rz, t}{RD}} 
+\theta_{t} ~=~{\frac{ W_{rz, t}}{RD}} 
 \end{equation}
 
 Where:\\[5pt]
@@ -632,13 +523,13 @@ Where:\\[5pt]
 	W$_{{\rm rz,t}}$ &:& Amount of soil moisture in the root zone at time step t  & [cm]\\
 	RD &:& Actual rooting depth  & [cm]\\
 \end{tabularx}
-
-\subsection{The SWAP water balance}
-
-The WOFOST implementation connected to the SWAP model has a detailed water balance including 
-multiple soil layers and variable integration time steps to account for highly non-linear processes 
-in the soil. Besides estimating water availability, SWAP also deals with soil temperature and solute 
-transport which allows to make 
-detailed simulations of the behaviour of water and solutes in the soil and its impact on plant growth.
-The SWAP water balance is not treated in this manual as SWAP has its own set of documentation 
-\footnote{http://www.swap.alterra.nl} where the theory and usage of the model is described.
+%
+%\subsection{The SWAP water balance}
+%
+%The WOFOST implementation connected to the SWAP model has a detailed water balance including 
+%multiple soil layers and variable integration time steps to account for highly non-linear processes 
+%in the soil. Besides estimating water availability, SWAP also deals with soil temperature and solute 
+%transport which allows to make 
+%detailed simulations of the behaviour of water and solutes in the soil and its impact on plant growth.
+%The SWAP water balance is not treated in this manual as SWAP has its own set of documentation 
+%\footnote{http://www.swap.alterra.nl} where the theory and usage of the model is described.

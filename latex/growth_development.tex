@@ -167,7 +167,7 @@ day length and can thus be obtained by:
 \begin{equation}
 % eq 5.3
 \label{eq:5.3}
-D_{r,t} = {f_{vern}}{f_{dayl}}{\frac{DT_{s}}{\sum T_{i}}}
+D_{r,t} = {f_{vern}} \cdot {f_{dayl}} \cdot {\frac{DT_{s}}{\sum T_{i}}}
 \end{equation}
 
 Where:\\[5pt]
@@ -278,7 +278,7 @@ into account in WOFOST.
 To reduce the impact of a poorly choosen VERNSAT parameter, a critical DVS is defined after which 
 vernalization is switched off and the $f_{verb}$ is set to 1.0. This parameter \textbf{VERNDVS}
 is currently set to 0.3 by default but is adjustable by the user. In the case that the vernalization
-requirement is not reached before VERNDVS a warning is issued to the user.
+requirement is not reached before VERNDVS a warning must issued to the user by any WOFOST implementation.
 
 \begin{figure}[p]
 	% fig 5.2
@@ -322,17 +322,17 @@ an integration over time should be performed. Therefore, for given fluxes of pho
 active radiation, at three different periods of the day, the potential instantaneous gross canopy
 CO$_{{\rm 2}}$ assimilation rate is computed. Subsequently, the potential gross canopy CO$_{{\rm 2}}$ 
 assimilation rate is calculated as a weighted average of the instantaneous rates during the selected instances
-
 Both calculations make use of the 3-point Gaussian integration method (Goudriaan, 1986; Spitters, 1986) 
-thus nine iterations are required: three periods
-of the day multiplied by three depths into the crop canopy. Finally, the actual gross photosynthesis rate is 
+thus nine iterations are required: three periods of the day multiplied by three depths into the crop canopy. 
+
+Finally, the actual gross photosynthesis rate is 
 computed by applying correction factors for daytime temperature,
 night time temperature and water stress onto the total daily assimilation. The calculations performed
 will be described in more detail in the paragraphs \ref{sec:PotentialDailyGrossAssimilation} to 
 \ref{sec:AssimilationWaterStress}.
 
 
-\subsection{Potential daily gross CO$_{{\rm 2}}$ assimilation rate of the canopy}
+\subsection{Potential daily gross CO$_{2}$ assimilation rate of the canopy}
 \label{sec:PotentialDailyGrossAssimilation}
 
 As is mentioned before, in order to integrate the gross instantaneous assimilation rate
@@ -523,7 +523,7 @@ different radiation fluxes are distinguished:
 \end{itemize}
 
 Radiation becomes diffuse when sun rays are partly absorbed and partly scattered (i.e.
-reflected or transmitted) by a leaf. The subscript {\it bl} (black) is used, the leaves show
+reflected or transmitted) by a leaf. The subscript {\it bl} (black) is used for leaves that show
 neither transmission nor reflection. The extinction coefficient of 'black leaves'
 can be calculated as:
 
@@ -554,9 +554,7 @@ Where:\\[5pt]
 	visible radiation    &    [-]\\
 \end{tabularx}
 
-In the model, the extinction coefficient for the diffuse radiation flux, 
-{\bf $\kappa$$_{{\rm df}}$} (acronym: {\bf KDIFTB})
-is not computed but should be provided by the user. It can be measured directly 
+In the model, the extinction coefficient for the diffuse radiation flux, {\bf $\kappa_{\rm df}$} (acronym: {\bf KDIFTB}) is not computed but should be provided by the user. It can be measured directly 
 under diffuse sky conditions.
 
 In equation \ref{eq:5.14}, 0.5 points to the average projection on the ground surface of leaves
@@ -632,6 +630,7 @@ canopy to the selected depth) can be written as (Goudriaan, 1986):
 
 \begin{equation}
 % eq 5.19 a-d
+\label{eq:LAI_reldepth}
 LAI_{L} = (0.5 + p \sqrt{0.15}) \cdot LAI~~~~for~~~~p = -1,0,1
 \end{equation}
 
@@ -880,18 +879,7 @@ Where:\\[5pt]
 The total instantaneous assimilation rate for the whole canopy per unit leaf area can be
 established using the Gaussian integration method, as a weighted average of the assimilation 
 at three levels within the canopy.
-However, first the leaf area index of the levels selected have to be established:
-
-\begin{equation}
-\label{eq:5.29}
-LAI_{L} = (0.5+p \sqrt{0.15})LAI~~~~for~~~~p=-1,0,1
-\end{equation}
-
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	LAI$_{{\rm L}}$ &:& Leaf area index at relative depth L in canopy    &    [ha ha$^{{\rm -1}}$]\\
-	LAI &:& Total leaf area of the crop (see \S \ref{sec:growthofleaves}) &   [ha ha$^{{\rm -1}}$]\\
-\end{tabularx}
+However, first the leaf area index of the levels selected have to be established (eq. \ref{eq:LAI_reldepth}):
 
 Introducing the values of the leaf area index of the three selected layers in the equations
 mentioned before, will yield the instantaneous assimilation at these horizons. The
@@ -910,7 +898,7 @@ Where:\\[5pt]
 	A$_{{\rm C,l}}$ &:& Total instantaneous canopy assimilation 
 	rate (per unit leaf area)    &    [kg ha$^{{\rm -1}}$ h$^{{\rm -1}}$]\\
 	A$_{{\rm T,L,p}}$ &:& Total instantaneous gross assimilation rate at relative 
-	depth L (see eq. \ref{eq:5.28}) at p= -1,0,1 (see eq. \ref{eq:5.29})    &    
+	depth L (see eq. \ref{eq:5.28}) at p= -1,0,1 (see eq. \ref{eq:LAI_reldepth})    &    
 	[kg ha$^{{\rm -1}}$ h$^{{\rm -1}}$]\\
 \end{tabularx}
 
@@ -977,7 +965,7 @@ A wide temperature range for optimum photosynthetic performance under field
 conditions is observed (Wardlaw, 1974). Low night-time temperatures also affect the
 assimilation. At night the assimilates, produced during daytime, are transformed into
 structural biomass. This process is hampered by low temperature. If these low temperatures prevail 
-for a several days, the assimilates accumulate in the leaves and the assimilation rate diminishes 
+for a several days, the primary assimilates accumulate in the leaves and the assimilation rate diminishes 
 and ultimately halts.
 
 In the model, this temperature effect is accounted for by introducing a correction factor,
@@ -1014,14 +1002,15 @@ The reduction factor for transpiration reduction can thus be calculated as.
 
 \begin{equation}
 \label{eq:5.37}
-RF_{tra} ~=~ {\frac{T _{a} }{T _{p} }}
+RF_{tra} ~=~ {\frac{T _{act} }{T _{\max} }}
 \end{equation}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
 	$RF_{{\rm tra}}$ &:& Reduction factor for reduced transpiration rates   & [-]\\
-	T$_{{\rm a}}$ &:& Actual transpiration   &     [cm d$^{{\rm -1}}$]\\
-	T$_{{\rm p}}$ &:& Potential transpiration   &     [cm d$^{{\rm -1}}$]\\
+	T$_{{\rm act}}$ &:& Actual transpiration   &     [cm d$^{{\rm -1}}$]\\
+	T$_{{\rm \max}}$ &:& Maximum transpiration for given crop status as derived from the crop LAI
+	and the reference evapotranspiration (see eq. \ref{eq:6.4})   &     [cm d$^{{\rm -1}}$]\\
 \end{tabularx}
 
 In \S \ref{sec:evapotranspiration} the calculation of the potential, T$_{{\rm p}}$, and actual 
@@ -1029,8 +1018,7 @@ the transpiration, T$_{{\rm a}}$, will be explained.
 
 
 \subsection{Photosynthesis in terms of CH$_{{\rm 2}}$O}
-In the photosynthesis process, CO$_{{\rm 2}}$ is reduced to carbohydrates (CH$_{{\rm 2}}$O) using the energy
-supplied by the absorbed light. The overall chemical reaction of this complex process is:
+In the photosynthesis process, CO$_{{\rm 2}}$ is reduced to carbohydrates (CH$_{{\rm 2}}$O) using the energy supplied by the absorbed light. The overall chemical reaction of this complex process is:
 
 \begin{equation}
 % equation 5.34
@@ -1049,14 +1037,15 @@ representing the molecular weights of CH$_{{\rm 2}}$O and CO$_{{\rm 2}}$ respect
 
 \begin{equation}
 % equation 5.36
+\label{eq:CH2Oassim}
 R _{d}^{1} ~=~ A _{d}^{1} \,\,{\frac{30}{44}}
 \end{equation}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
-	R$^{{\rm 1}}$$_{{\rm d}}$ &:& Gross daily CH$_{{\rm 2}}$O assimilation rate 
+	R$_{{\rm d}}$ &:& Gross daily CH$_{{\rm 2}}$O assimilation rate 
 	 &   [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
-	A$^{{\rm 1}}$$_{{\rm d}}$ &:& Gross daily CO$_{{\rm 2}}$ assimilation rate 
+	A$_{{\rm d}}$ &:& Gross daily CO$_{{\rm 2}}$ assimilation rate 
 	(see eq. \ref{eq:5.11})  &    [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\   
 \end{tabularx}
 
@@ -1084,15 +1073,7 @@ by a crop in a growing season (Penning de Vries {\it et al.}, 1979). This indica
 importance of accurate quantification of this process in the model.
 
 \subsection{Maintenance respiration as a function of plant biomass}
-The maintenance costs may be estimated on the basis of the quantities of proteins and
-minerals present in the biomass and on crop metabolic activity, as presented by De Wit {\it et
-	al.} (1978). This method, however, requires information on the nitrogen and mineral
-contents of the vegetation.
-Based on the results of this analysis, typical values for the maintenance coefficients of
-various plant organs have been derived by Penning de Vries \& van Laar (1982).
-In the model, these coefficients are used to calculate the maintenance requirements of the
-crop. According to this approach the maintenance requirements are approximately 
-proportional to the dry weights of the plant organs to be maintained: 
+The maintenance costs may be estimated on the basis of the quantities of proteins and minerals present in the biomass and on crop metabolic activity, as presented by De Wit {\it et 	al.} (1978). This method, however, requires information on the nitrogen and mineral contents of the crop. Based on the results of this analysis, typical values for the maintenance coefficients of various plant organs have been derived by Penning de Vries \& van Laar (1982). In the model, these coefficients are used to calculate the maintenance requirements of the crop. According to this approach the maintenance requirements are approximately proportional to the dry weights of the plant organs to be maintained: 
 
 \begin{equation}
 \label{eq:5.39}
@@ -1181,78 +1162,66 @@ atmosphere (van Keulen \& Seligman, 1987). Potential transpiration is the water 
 a field crop which covers the soil completely and has an optimum supply of water from
 the soil. 
 
-\subsection{Evaporation and transpiration}
-Potential evapotranspiration of a crop ET0 is the sum of potential transpiration T$_{{\rm m}}$ and
-soil evaporation E0$_{{\rm s}}$.
+\subsection{Maximum evaporation and transpiration}
+The potential evapotranspiration rate of a cropped field $ET_{t}$ is the sum of the maximum transpiration rate from the crop canopy $T_{{\rm \max}}$ and the maximum evaporation rate from the surface below the crop canopy. The latter can either take place from a soil surface with maximum evaporation rate $E_{s,\max}$ or a water surface (in case of flooded crops like rice) with evaporation rate $E_{w,\max}$.
 
 \begin{equation}
 \label{eq:6.2}
-ET0 ~=~ E0_{s} ~+~ T_{m} 
+ET_{t} ~=~ T_{{\rm \max}} + E_{s,\max} + E_{w,\max}
 \end{equation}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
-	ET0 &:& Potential evapotranspiration rate (see \S 4.1.3) & [cm d$^{{\rm -1}}$]\\
-	E0$_{{\rm s}}$ &:& Potential evaporation of a bare soil (see \S 4.1.3)  & [cm d$^{{\rm -1}}$]\\
-	T$_{{\rm m}}$ &:& Maximum crop transpiration rate (see eq. 6.4)  & [cm d$^{{\rm -1}}$]\\
+    $T_{{\rm \max}}$ &:& Maximum crop transpiration rate  & [cm d$^{{\rm -1}}$]\\
+	E0$_{{\rm s,\max}}$ &:& Maximum evaporation of a bare soil  & [cm d$^{{\rm -1}}$]\\
+	E0$_{{\rm w,\max}}$ &:& Maximum evaporation of a water surface & [cm d$^{{\rm -1}}$]\\
 \end{tabularx}
 
-For some crops the potential evapotranspiration can be higher than the Penman-Monteith
-reference evapotranspiration. 
-Therefore, in the model a correction factor, a so called  crop coefficient
-(acronym: {\bf CFET}) is introduced to account for this effect. The Penman-Monteith evapotranspiration
-should be multiplied by this crop coefficient (Feddes, 1978; Doorenbos \& Pruitt, 1977).
-The evaporation is reduced due to the presence of vegetation, which intercepts the solar
-energy and reduces the windspeed. The evaporation of the soil as a function of the leaf
-area index (Goudriaan, 1977; Ritchie, 1972; 1971) can be estimated as:
-
-\begin{equation}
-\label{eq:6.3}
-E0 _{s} ~=~ ET0 \cdot e^{-\kappa_{gb} \cdot LAI}
-\end{equation}
-
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	E0$_{{\rm s}}$ &:& Potential bare soil evaporation  & [cm d$^{{\rm -1}}$]\\
-	$\kappa$$_{{\rm gb}}$ &:& Extinction coefficient for global radiation  & [-]\\
-	LAI &:& Leaf area index  & [ha ha$^{{\rm -1}}$]\\
-\end{tabularx}
-
-The potential transpiration rate can be calculated by combining equations \ref{eq:6.2} and 
-\ref{eq:6.3}.
+The maximum crop transpiration rate can be calculated from the reference evapontranspiration
+rate and the crop LAI. Moreover, for some crops the maximum crop transpiration rate can be higher 
+than the reference evapotranspiration (section \ref{sec:PMRef}). Therefore, in the model a 
+correction factor, a so called  crop coefficient (acronym: {\bf CFET}) is introduced to account 
+for this effect. The reference evapotranspiration should be multiplied by this crop coefficient 
+(Feddes, 1978; Doorenbos \& Pruitt, 1977).
 
 \begin{equation}
 \label{eq:6.4}
-T _{m} ~=~ ET0\, (1~-~e ^{-\kappa _{gb} \, LAI} )
+T_{\max} ~=~ ET0 \cdot CFET \cdot (1~-~e ^{-\kappa _{gb} \, LAI} )
 \end{equation}
 
 Where:\\[5pt]
 \begin{tabularx}{\textwidth}{llXr}
-	T$_{{\rm m}}$ &:& Maximum crop transpiration rate & [cm d$^{{\rm -1}}$]\\
-	ET0 &:& Potential evapotranspiration rate & [cm d$^{{\rm -1}}$]\\
+	T$_{{\rm \max}}$ &:& Maximum crop transpiration rate & [cm d$^{{\rm -1}}$]\\
+	ET0 &:& Reference crop evapotranspiration rate & [cm d$^{{\rm -1}}$]\\
 	$\kappa$$_{{\rm gb}}$ &:& Extinction coefficient for global radiation & [-]\\
 	LAI &:& Leaf area index (see \S \ref{sec:growthofleaves}) & [ha ha$^{{\rm -1}}$]\\
 \end{tabularx}
 
-The extinction coefficient for global radiation can be estimated as a factor times the
-extinction coefficient of diffuse radiation:
+The extinction coefficient for global radiation $\kappa$$_{{\rm gb}}$ can be estimated as a factor times the extinction coefficient of diffuse radiation $\kappa_{{\rm df}}$ (\ref{eq:5.15}):
 
 \begin{equation}
 \label{eq:6.5}
 \kappa_{gb} ~=~ 0.75\, \kappa_{df} 
 \end{equation}
 
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	$\kappa_{{\rm gb}}$ &:& Extinction coefficient for global radiation & [-]\\
-	$\kappa_{{\rm df}}$ &:& Extinction coefficient for diffuse light & [-]\\
-\end{tabularx}
-
-The maximum evaporation rate from a shaded water surface can be calculated in the same
-way as equation \ref{eq:6.4}: 
+The evaporation rate is reduced due to the presence of vegetation, which intercepts the solar energy and reduces the windspeed. The maximum evaporation rate of a shaded soil surface as a function of the leaf area index (Goudriaan, 1977; Ritchie, 1972; 1971) can thus be estimated as:
 
 \begin{equation}
-\label{eq:6.6}
+\label{eq:Esmax}
+E_{s,\max} ~=~ E0_{s} \cdot e^{-\kappa_{gb} \cdot LAI}
+\end{equation}
+
+Where:\\[5pt]
+\begin{tabularx}{\textwidth}{llXr}
+	$E0_{s}$ &:& Potential bare soil evaporation (equation \ref{eq:Penman}) & [cm d$^{{\rm -1}}$]\\
+	$\kappa$$_{{\rm gb}}$ &:& Extinction coefficient for global radiation  & [-]\\
+	LAI &:& Leaf area index  & [ha ha$^{{\rm -1}}$]\\
+\end{tabularx}
+
+The maximum evaporation rate from a shaded water surface can be calculated in an analogue way as equation \ref{eq:Esmax}: 
+
+\begin{equation}
+\label{eq:Ewmax}
 E_{w,\max } ~=~ E0_{w} \cdot e^{-\kappa_{gb} LAI}
 \end{equation}
 
@@ -1266,23 +1235,6 @@ Where:\\[5pt]
 	LAI &:& Leaf area index & [ha ha$^{{\rm -1}}$]\\
 \end{tabularx}
 
-The maximum evaporation rate from a shaded bare soil surface can also be calculated in
-the same way as in equation \ref{eq:6.4} and \ref{eq:6.6}:
-
-\begin{equation}
-\label{eq:6.7}
-E_{s,\max } ~=~ E0 _{s} \,\,\, e ^{-\kappa  _{gb} LAI}
-\end{equation}
-
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	E$_{{\rm s,max}}$ &:& Maximum evaporation rate from a shaded 
-	soil surface & [cm d$^{{\rm -1}}$]\\
-	E0$_{{\rm s}}$ &:& Potential evaporation rate from a bare soil 
-	surface & [cm d$^{{\rm -1}}$]\\
-	$\kappa$$_{{\rm gb}}$ &:& Extinction coefficient for total global radiation & [-]\\
-	LAI &:& Leaf area index & [ha ha$^{{\rm -1}}$]\\
-\end{tabularx}
 
 \subsection{Reduction of the transpiration due to water stress}
 
@@ -1293,7 +1245,7 @@ shortage or excess of water in the root zone. Water uptake by the roots depends 
 difference in potential between the water in the plant and in the soil, and on the resistance
 to transport of moisture from the soil to the atmosphere (van Keulen \& Seligman, 1987).
 In contrast to Feddes {\it et al}. (1978) not soil water potential, but soil water content is
-chosen as the independent variable (Gollan {\it et al}., 1986; Schulze 1986).
+chosen as the independent variable (Gollan {\it et al}., 1986; Schulze 1986; Berg and Driessen, 2002).
 
 Up to a point, the water potential in the plant can be adapted in order to maintain
 potential transpiration. At what soil moisture content the transition from potential
@@ -1303,7 +1255,7 @@ transpiration with a reduction factor. This reduction factor is defined as (van 
 
 \begin{equation}
 \label{eq:6.8}
-R_{ws} ~=~{\frac{\theta_{t} ~-~ \theta  _{wp} }{ \ _{ws} ~-~ \theta_{wp} }}
+R_{ws} ~=~{\frac{\theta_{t} ~-~ \theta_{wp} }{ \theta_{ws} ~-~ \theta_{wp}}}
 \end{equation}
 
 Where:\\[5pt]
@@ -1343,16 +1295,9 @@ are soil specific and should be given by the user. Figure \ref{fig:TaTp_vs_soilm
 a graphical overview of the reduction function for transpiration (e.g. $T_a/T_p$) as a 
 function of soil moisture content.
 
-The soil water depletion fraction, p, is a function of the potential evapotranspiration rate 
-(for a closed canopy) and the crop group  number. 
-In literature, instead of the term soil water depletion fraction, also the 
-expression easily available water is used. Easily available water is defined as the amount of
+The soil water depletion fraction, p, is a function of the potential evapotranspiration rate (for a closed canopy) and the crop group number.  In literature, instead of the term soil water depletion fraction, also the expression easily available water is used. Easily available water is defined as the amount of
 water between $\theta$$_{{\rm fc}}$ and $\theta$$_{{\rm wp}}$ which can be extracted from the root 
-zone without reducing the
-transpiration. Indicative p-values for the most important crops at different values of ET0
-are presented in Table 6.1. The crop group number ranges from 1 (drought-sensitive) to 5
-(drought-resistant). An example of a classification of the different crop groups is
-presented in Table 6.2.
+zone without reducing the transpiration. Indicative p-values for the most important crops at different values of ET0 are presented in Table \ref{tbl:soilwatdeplfraction}. The so-called crop group number ranges from 1 (drought-sensitive) to 5 (drought-resistant). An example of a classification of the different crop groups is presented in Table \ref{tbl:ExampleCropGroups}.
 
 \begin{table}
 	% Table 6.1
@@ -1363,7 +1308,7 @@ presented in Table 6.2.
 		\hline
 		\multicolumn{10}{c}{Crop ET0 in cm d-1}\\
 		\hline
-		group$^{\rm *}$ & 0.2 & 0.3 & 0.4 & 0.5 & 0.6 & 0.7 & 0.8 & 0.9 & 1.0\\
+		Crop group & 0.2 & 0.3 & 0.4 & 0.5 & 0.6 & 0.7 & 0.8 & 0.9 & 1.0\\
 		1 & 0.45 & 0.38 & 0.30 & 0.25 & 0.23 & 0.20 & 0.18 & 0.16 & 0.15\\
 		2 & 0.60 & 0.50 & 0.43 & 0.35 & 0.30 & 0.28 & 0.25 & 0.23 & 0.20\\
 		3 & 0.75 & 0.65 & 0.55 & 0.45 & 0.40 & 0.38 & 0.33 & 0.30 & 0.25\\
@@ -1380,7 +1325,7 @@ presented in Table 6.2.
 	\label{tbl:ExampleCropGroups}
 	\begin{tabularx}{\textwidth}{lX}
 		\hline
-		Group no & Representative crop types\\
+		Crop group & Representative crop types\\
 		\hline
 		1 & leaf vegetables, strawberry\\     
 		1-2 & cabbage, onion\\
@@ -1400,8 +1345,8 @@ closed canopy can be as low as 0.10. For very low values of potential evapotrans
 of a closed canopy this fraction can be as high as 0.96.
 Note that it is possible that the reduction factor R$_{{\rm ws}}$ (eq. \ref{eq:6.8}) might obtain 
 values higher
-than unity and lower than zero for certain values of p and $\theta$$_{{\rm t}}$. Since this does not make
-any sense, in the model the highest possible value for R$_{{\rm ws}}$ is set to unity and the lowest
+than one and lower than zero for certain values of p and $\theta$$_{{\rm t}}$. Since this does not make
+any sense, in the model the highest possible value for R$_{{\rm ws}}$ is set to one and the lowest
 possible value is set to zero.
 An empirical formula can be used to calculate the fraction of easily available soil water,
 yielding identical values as the ones given in the Table \ref{tbl:soilwatdeplfraction} 
@@ -1432,12 +1377,6 @@ applied to reproduce the table values correctly (van Diepen {\it et al}., 1988):
 p~=~p~+~{\frac{ET0 ~-~ 0.6}{No _{cg} \, (\, No _{cg} ~+~3\, )}}
 \end{equation}
 
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	where p &:& Fraction of easily available soil water  & [cm$^{{\rm 3}}$ cm$^{{\rm -3}}$]\\
-	ET0 &:& Potential evapotranspiration rate  & [cm d$^{{\rm -1}}$]\\
-	No$_{{\rm cg}}$ &:& Crop Group number {\small (=1 to 5, Doorenbos et al., 1978)}  & [-]\\
-\end{tabularx}
 
 \subsection{Reduction of the transpiration due to oxygen stress}
 The transpiration rate of the plants can also be reduced when the root zone is completely
@@ -1493,19 +1432,12 @@ Where:\\[5pt]
 	No$_{{\rm d}}$ &:& Number of successive days with oxygen stress & [-]\\
 \end{tabularx}
 
-For crops which roots develop airducts, like for example rice, and for crops grown on
-perfectly drained land, the reduction factor for oxygen shortage equals unity. If this ratio
-is less then unity, the actual transpiration rate is reduced proportionally.
+For crops which roots develop airducts, like for example rice, and for crops grown on perfectly drained land, the reduction factor for oxygen shortage equals unity. If this $R_{os}$ is less then unity, the actual transpiration rate is reduced proportionally. Usually, in freely draining soils oxygen stress does not play any role. It may occur when the critical soil moisture content for aeration is greater than the soil moisture content at field capacity and when the subsoil is very slowly permeable. In case of groundwater influence, oxygen shortage may occur regularly. 
 
-Usually, in freely draining soils oxygen stress does not play any role. It may occur when
-the critical soil moisture content for aeration is greater than the soil moisture content at
-field capacity and when the subsoil is very slowly permeable. In case of groundwater
-influence, oxygen shortage may occur regularly. However, the process of transpiration
-reduction due oxygen shortage is poorly parametrized and therefore values for the
-reduction factor are rather speculative. 
+However, the process of transpiration reduction due oxygen shortage is strongly simplified: it is just affecting transpiration; the aforementioned root decay is not modelled at all while the correct soil characterisation remains challenging. Moreover, it is important to state that the model is quite sensitive to errors in $R_{os}$ because at (too) small values of $R_{os}$, T$_{a}$ will be strongly affected resulting in little soil moisture extraction by the plant and again in (too) small values of $R_{os}$ the following day. In contrast, (too) small values of $R_{ws}$ also result in (too) small values of T$_{a}$, and thus more correct values of R$_{ws}$ th following day.
 
 \subsection{Actual transpiration}
-As a result of water excess and/or water shortage the reduction factor for the transpiration rate can be
+As a result of water excess and/or water shortage the reduction factor for the transpiration rate is
 calculated as:
 
 \begin{equation}
@@ -1513,32 +1445,30 @@ calculated as:
 RF_{tra} = R_{ws} \,\, R_{os}
 \end{equation}
 
-Figure \ref{fig:TaTp_vs_soilmoisture} provides an overview of the ratio $\frac{T_a}{T_p}$ as
+And the actual transpiration rate as:
+
+\begin{equation}
+\label{eq:Tact}
+T_{act} = T_{\max} \cdot RF_{tra}
+\end{equation}
+
+Figure \ref{fig:TaTp_vs_soilmoisture} provides an overview of the ratio $\frac{T_{act}}{T_{\max}}$ as
 a function of soil moisture level $\theta$. 
 
 
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=120mm]{\FigDir/figure_FeddesTrapezoid.pdf}
-	\caption{The relation between soil water content, $\theta$, and Ta/Tp for a crop/soil combination. 
-		$\theta_{{\rm wp}}$, $\theta_{cr}$, $\theta_{{\rm wp}}$ and $\theta_{{\rm sat}}$ represent the water
-		 content of the soil at wilting point, the critical point for potential transpiration, field capacity 
-		 and saturation, respectively. The dashed line represents either a more drought resistant species under
-		 the same field conditions, or the same species under a lower evaporative demand, caused by different
-		 weather conditions (Penning de Vries et al., 1989; van Laar et al., 1992)}
+	\caption{The relation between soil water content, $\theta$, and  $\frac{T_{act}}{T_{\max}}$ for a crop/soil combination. $\theta_{{\rm wp}}$, $\theta_{cr}$, $\theta_{{\rm fc}}$ and $\theta_{{\rm sat}}$ represent the water content of the soil at wilting point, the critical point for potential transpiration, field capacity and saturation, respectively. The dashed line represents either a more drought resistant species under the same field conditions, or the same species under a lower evaporative demand, caused by different weather conditions (Penning de Vries et al., 1989; van Laar et al., 1992)}
 	\label{fig:TaTp_vs_soilmoisture}
 \end{figure}
 
 \section{Growth}
 
-The amount of the absorbed CH$_{{\rm 2}}$O that remains after correction and reduction of the
-gross CO$_{{\rm 2}}$ assimilation rate (e.g. the net assimilation rate) is available to be 
-converted into dry matter. Growth, 
-in fact is the increase in dry matter ignoring its water content. The net assimilation rate
-is thus simply the difference between the gross actual assimilation rate and the losses due to
-maintenance respiration:
+The amount of CH$_{{\rm 2}}$O that remains after correction and reduction of the gross CO$_{{\rm 2}}$ assimilation rate (e.g. the net assimilation rate) is available to be converted into structural dry matter.  The net assimilation rate is thus simply the difference between the gross actual assimilation rate and the losses due to maintenance respiration:
 
 \begin{equation}
+    \label{eq:5.41}
 	R_{n} = R_{d} ~-~ R _{m,T} 
 \end{equation}
 
@@ -1575,36 +1505,27 @@ compound can be calculated (Penning de Vries {\it et al.}, 1974). The transport 
 molecules are included. Two active passages of membranes are assumed. Each active
 passage requires 1 ATP, which is provided by respiring $^{{\rm 1}}$/$_{{\rm 3}}$$_{{\rm 8}}$ molecule of glucose.
 
-The assimilates required to produce a unit weight of a certain plant organ can now be
-calculated from its chemical composition and the assimilate requirements of the various
-chemical compounds. Storage organs (grains, tubers, etc.) vary to much in composition
-among species for one general value of their assimilate requirements to be given. The
-conversion efficiency represents the inverse of the assimilate requirement.
+The assimilates required to produce a unit weight of a certain plant organ can now be calculated from its chemical composition and the assimilate requirements of the various chemical compounds. The different plant organs and in particular the storage organs (grains, tubers, etc.) vary to much in composition among species for one general value of their assimilate requirements to be given. Therefore WOFOST uses a conversion efficiency which is crop and plant organ specific. 
+The conversion efficiency represents the inverse of the assimilate requirement to produce one unit of structural plant material. At higher temperatures the conversion processes are accelerated, but the pathways are identical (Spitters {\it et al.} 1989). Hence, the assimilate requirements do not vary with temperature. 
 
-At higher temperatures the conversion processes are accelerated, but the pathways are
-identical (Spitters {\it et al.} 1989). Hence, the assimilate requirements do not vary with
-temperature. The growth respiration rate can then be calculated as:
+The conversion efficiency factor for the assimilates of a specified organ, {\bf C$_{{\rm e,i}}$}, is crop
+specific and are provided in the crop parameter files for different crop species. Acronyms used in the model: {\bf CVL} (leaves), {\bf CVO} (storage organs), {\bf CVR} (roots) and {\bf CVS} (stems).
 
-\begin{equation}
-\label{eq:5.41}
-R _{g} ~=~ R _{d} ~-~ R _{m,T} 
-\end{equation}
+%
+%\begin{equation}
+%R _{g} ~=~ R _{d} ~-~ R _{m,T} 
+%\end{equation}
+%
+%Where:\\[5pt]
+%\begin{tabularx}{\textwidth}{llXr}
+%	R$_{{\rm g}}$ &:& Growth respiration rate   &     [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
+%	R$_{{\rm d}}$ &:& Actual daily CH$_{{\rm 2}}$O assimilation rate (see eq. \ref{eq:CH2Oassim})   &   
+%	[kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
+%	R$_{{\rm m,T}}$ &:& Maintenance respiration rate at 
+%	temperature T (see eq. \ref{eq:5.40})   &     [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
+%\end{tabularx}
 
-Where:\\[5pt]
-\begin{tabularx}{\textwidth}{llXr}
-	R$_{{\rm g}}$ &:& Growth respiration rate   &     [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
-	R$_{{\rm d}}$ &:& Actual daily CH$_{{\rm 2}}$O assimilation rate (see eq. \ref{eq:5.37})   &   
-	[kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
-	R$_{{\rm m,T}}$ &:& Maintenance respiration rate at 
-	temperature T (see eq. \ref{eq:5.40})   &     [kg ha$^{{\rm -1}}$ d$^{{\rm -1}}$]\\
-\end{tabularx}
-
-As explained, conversion into dry matter costs energy, therefore a conversion factor is
-defined. This factor depends on the conversion efficiency of assimilates and on the
-partitioning factors of the different organs. The dry matter is multiplied with this overall
-conversion efficiency factor to calculate the dry matter increase. The conversion 
-efficiency of carbohydrates into structural plant material is calculated as a weighted average
-of the efficiencies for the various plant organs.
+To convert the net assimilates into a dry matter increase at the level of the whole plant, a  conversion factor is required that takes into account the conversion efficiency of the different plant organs and the amount of assimilates partitioned to the different plant organs. Therefore the conversion factor for converting carbohydrates into structural plant material at the plant level is calculated as a weighted average of the conversion efficiencies and partitioning factors for the various plant organs.
 
 \begin{equation}
 \label{eq:5.42}
@@ -1626,15 +1547,11 @@ Where:\\[5pt]
 	[kg kg$^{{\rm -1}}$]\\
 	C$_{{\rm e,i}}$ &:& Conversion efficiency factor of the assimilates 
 	of a specified organ  &      [kg kg$^{{\rm -1}}$]\\
-	pc$_{{\rm i}}$ &:& Partitioning factor of organ i   &
+	pc$_{{\rm i}}$ &:& Partitioning factor of organ i (section \ref{sec:DMpartitioning})   &
 	[kg kg$^{{\rm -1}}$]\\
 	i &:& Leaves (lv), storage organs (so), stems (st)\\
 	rt &:& roots\\
 \end{tabularx}
-
-The conversion efficiency factor for the assimilates of a specified organ, {\bf C$_{{\rm e,i}}$}, is crop
-specific and should be given by the user. Acronyms used in the model: {\bf CVL} (leaves), {\bf CVO}
-(storage organs), {\bf CVR} (roots) and {\bf CVS} (stems).
 
 The dry matter growth rate of the total crop can be calculated as:
 
@@ -1656,10 +1573,9 @@ Where:\\[5pt]
 \subsection{Dry matter partitioning}
 \label{sec:DMpartitioning}
 
-In WOFOST the dry matter is partitioned over the 4 parts of the
-plant. In the model, total dry matter growth is partitioned according to fixed distribution
-factors, defined as a function of development stage. Dry matter is first partitioned
-between shoots and roots. 
+In WOFOST the dry matter is partitioned over the 4 parts of the plant according to fixed distribution factors, defined as a function of development stage. The background for this approach is mostly pragmatic: it makes it very easy to derive partitioning factors from crop experimental trials. Further, the mechanism is simple and fairly robust but it has been noticed that it strongly depends on having a correct description of the crop phenological development and cropping calendar. An improper phenological development or misplaced cropping calendar can easily lead to very high or very low leaf area index. A further drawback of the static partitioning tables is that they do not take into account the ability of the plant organs to store or process the assimilates (e.g. sink limitations), moreover there is no impact of environmental conditions on partitioning.
+
+Dry matter is first partitioned between shoots and roots.
 
 \stepcounter{equation}
 \begin{align}
@@ -1700,10 +1616,7 @@ Where:\\[5pt]
 	i &:& Leaves (lv), storage organs (so), stems (st)
 \end{tabularx}
 
-The partitioning factors, {\bf pc$_{{\rm i}}$}, are a function of development stage and are crop specific. In
-the model, the dependency is described using AFGEN tables with the development stage
-as the independent variable (see Appendix 2). Acronyms used in the model: {\bf FLTB} (lv),
-{\bf FOTB} (so), {\bf FRTB} (rt) and {\bf FSTB} (st).
+The partitioning factors, {\bf pc$_{{\rm i}}$}, are a function of development stage and are crop specific. In the model, the dependency is described using AFGEN tables with the development stage as the independent variable (see Appendix 2). Acronyms used in the model: {\bf FLTB} (lv), {\bf FOTB} (so), {\bf FRTB} (rt) and {\bf FSTB} (st).
 
 At any development stage the following relation must be valid, if not, the simulation will
 be stopped (see also fig. \ref{fig:partitioning}):
@@ -1786,7 +1699,7 @@ participates in the plant processes. The death rate of stems and roots is consid
 function of development stage. This dependency is described using an
 AFGEN table with the development stage as the independent variable (see also Appendix
 \ref{app:AFGEN}). The death rate of leaves is more complicated. Leaf senescence due to shading (high
-LAI), water stress and also due to exceedance of the life span should be accounted for.
+LAI), water stress and physiologic ageing should be accounted for.
 
 The net growth rate of the stems and roots can described by:
 
@@ -1836,11 +1749,7 @@ Where:\\[5pt]
 	i &:& Stems (st), roots (rt), leaves (lv)\\
 \end{tabularx}
 
-In the model, the initial values of the dry weight of the
-various organs are calculated. An initial value for the total dry weight of the crop
-(acronym: {\bf TDWI}) should be provided by the user. This value is multiplied by the
-partitioning factors, pc$_{{\rm i}}$, at emergence, yielding the initial values of dry weight of the
-various organs.
+In the model, the initial values of the dry weight of the various organs are calculated. An initial value for the total dry weight of the crop (acronym: {\bf TDWI}) should be provided by the user and can be derived from planting density and seed weight. This value is multiplied by the partitioning factors, pc$_{{\rm i}}$, at emergence, yielding the initial values of dry weight of the various organs.
 
 \subsection{Growth of leaves}
 \label{sec:growthofleaves}
@@ -1848,19 +1757,9 @@ The area of green leaves is the major determinant for light absorption and photo
 of the crop. Under optimal conditions, light intensity and temperature are the environmental factors influencing the rate of leaf area expansion. Light intensity determines the
 rate of photosynthesis and hence the supply of assimilates to the leaves.
 
-Temperature affects the rates of cell division and extension (Ng \& Loomis, 1984; Sheehy
-{\it et al.}, 1980; Acock {\it et al.}, 1978). During the early stages of crop growth, temperature is
-the overriding factor. The rate of leaf appearance and final leaf size are constrained by
-temperature through its effect on cell division and extension, rather than by the supply of
-assimilates (Hunt, 1982; Causton \& Venus, 1981; van Dobben, 1962). The growth curve
-in the early stage has an exponential form. Some unpublished field data have shown that
-the exponential model should be restricted to the situation where the development stage, 
-D$_{{\rm s,t}}$ $<$ 0.3 and LAI $<$ 0.75 (see also eq. \ref{eq:5.4}). In the model, however, it is assumed that
-the exponential growth rate of the leaf area index is valid until the source-limited increase
-of the leaf area index equals the exponential growth rate.
+Temperature affects the rates of cell division and extension (Ng \& Loomis, 1984; Sheehy {\it et al.}, 1980; Acock {\it et al.}, 1978). During the early stages of crop growth, temperature is the overriding factor. The rate of leaf appearance and final leaf size are constrained by temperature through its effect on cell division and extension, rather than by the supply of assimilates (Hunt, 1982; Causton \& Venus, 1981; van Dobben, 1962). The growth curve in the early stage has an exponential form and it is assumed that the exponential growth rate of the leaf area index continuous until the source-limited increase of the leaf area index equals the exponential growth rate.
 
-The growth rate of the leaf area index per time step in the early, exponential growth
-stage, can be calculated as:
+The growth rate of the leaf area index per time step in the early, exponential growth stage, can be calculated as:
 
 \begin{equation}
 % eq:5.50
@@ -1879,11 +1778,11 @@ Where:\\[5pt]
 	[\degrees C]\\
 \end{tabularx}
 
-In theory, the maximum relative increase of the leaf area index, {\bf RL}, is a function of
-effective temperature. For a relative wide range of temperatures {\bf RL} responds more or
-less linearly to temperature (Hunt {\it et al.}, 1985; Causton \& Venus, 1981; van Dobben,
-1962). In the model however, a fixed value per crop type is assumed (acronym: 
-{\bf RGRLAI}). This value should be given by the user.
+%In theory, the maximum relative increase of the leaf area index, {\bf RL}, is a function of
+%effective temperature. For a relative wide range of temperatures {\bf RL} responds more or
+%less linearly to temperature (Hunt {\it et al.}, 1985; Causton \& Venus, 1981; van Dobben,
+%1962). In the model however, a fixed value per crop type is assumed (acronym: 
+%{\bf RGRLAI}). This value should be given by the user.
 
 The accumulated leaf area index at time step t during the exponential growth stage can be
 described as:
@@ -1902,14 +1801,9 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step   &    [d]
 \end{tabularx}
 
-During the development of the crop, leaf area expansion is increasingly restricted by
-assimilate supply (i.e. source limited increase). Branching and tillering generate an
-increasing number of sites per plant, where leaf initiation can take place. As mentioned
-earlier, in the model it is assumed that the exponential growth rate of leaf area index will
-continue until it equals the source limited growth rate of the leaf area index.
+During the development of the crop, leaf area expansion is increasingly restricted by assimilate supply (i.e. source limited increase). Branching and tillering generate an increasing number of sites per plant, where leaf initiation can take place. As mentioned earlier, in the model it is assumed that the exponential growth rate of leaf area index will continue until it equals the source limited growth rate of the leaf area index.
 
-The growth rate of the leaf area index at time step t during the source limited growth 
-stage can be described by:
+The growth rate of the leaf area index at time step t during the source limited growth stage can be described by:
 
 \begin{equation}
 \label{eq:5.52}
@@ -1927,17 +1821,11 @@ Where:\\[5pt]
 	[ha kg$^{{\rm -1}}$]\\
 \end{tabularx}
 
-The net dry matter growth of leaves, $\Delta$Wn$_{{\rm lv}}$, can be found by subtracting the weight of
-leaves which died during the current time step from the dry matter growth of leaves,
-$\Delta$W$_{{\rm lv}}$. This process will be described later in more detail in this paragraph.
+The net dry matter growth of leaves, $\Delta$Wn$_{{\rm lv}}$, can be found by subtracting the weight of leaves which died during the current time step from the dry matter growth of leaves, $\Delta$W$_{{\rm lv}}$. This process will be described later in more detail in this paragraph.
 
-The specific leaf area, {\bf S$_{{\rm la}}$} (acronym: {\bf SLATB}), is defined as the increase of the leaf area
-of the crop per kg weight increase of the living leaves. S$_{{\rm la}}$ is crop specific and a function
-of the development stage (see figure 8). In the model this dependency is described using
-an AFGEN table with the development stage as the independent variable.
+The specific leaf area, {\bf S$_{{\rm la}}$} (acronym: {\bf SLATB}), is defined as the increase of the leaf area of the crop per kg weight increase of the living leaves. S$_{{\rm la}}$ is crop specific and a function of the development stage (see figure 8). In the model this dependency is described using an AFGEN table with the development stage as the independent variable.
 
-The accumulated leaf area index at time step t during the source limited growth stage can
-be described as:
+The accumulated leaf area index at time step t during the source limited growth stage can be described as:
 
 \begin{equation}
 \label{eq:5.53}
@@ -1953,36 +1841,13 @@ Where:\\[5pt]
 	$\Delta$t &:& Time step    &    [d]\\
 \end{tabularx}
 
-In the model, {\bf LAI$_{{\rm t}}$} is initialized by 
-taking the fraction of initial biomass (acronym: {\bf TWDI}) partitioned to the leaves and 
-multiply at with the specific leaf area at the current DVS. Note that in older versions of
-WOFOST a specific leaf area index at emergence (acronym: {\bf LAIEM}) was used which should 
-be provided by the user. However, the use of {\bf LAIEM} is deprecated.
+In the model, {\bf LAI$_{{\rm t}}$} is initialized by taking the fraction of initial biomass (acronym: {\bf TWDI}) partitioned to the leaves and multiply at with the specific leaf area at the current DVS. Note that in older versions of WOFOST a specific leaf area index at emergence (acronym: {\bf LAIEM}) was used which is now deprecated.
 
-In the model, however, the accumulated leaf area cannot be calculated directly. The leaf
-area index has to be corrected for leaf senescence which occurred during the current time
-step. The leaf senescence can be caused by physiological ageing, water stress and/or high
-leaf area index (i.e. mutual shading). Later in this text, more attention will be paid to
-these effects.
+In the model, however, the accumulated leaf area cannot be calculated directly. The leaf area index has to be corrected for leaf senescence which occurred during the current time step. The leaf senescence can be caused by physiological ageing, water stress and/or high leaf area index (i.e. mutual shading) and is described in section \ref{sec:LeafSenescence}.
 
-In order to correct for leaf senescence, the specific leaf area of each time step, S$_{{\rm la}}$, the
-growth of the dry matter weight of leaves per time step, $\Delta$W$_{{\rm lv}}$ and the physiological age,
-P$_{{\rm age}}$ (see eq. \ref{eq:5.57}), have to be stored in three different arrays. These arrays are organized
-as follows: the first element of the arrays represents the most recent age class (or time
-step) and the last element of the arrays represents the oldest age class (or time step). It
-should be clear that the position of an element in the arrays represents its age class, in
-time steps. The dry matter weight of the leaves, which have died during the current time
-step, has to be. subtracted from the growth of dry matter weight per time step. One array
-contains thus the net dry matter growth of the leaves per time step, $\Delta$Wn$_{{\rm lv}}$. 
-The procedure which describes this process will be explained later in this text. 
+In order to correct for leaf senescence, the specific leaf area of each time step, S$_{{\rm la}}$, the growth of the dry matter weight of leaves per time step, $\Delta$W$_{{\rm lv}}$ and the physiological age, P$_{{\rm age}}$ (see eq. \ref{eq:5.57}), are stored in three different arrays. These arrays are organized as follows: the first element of the arrays represents the most recent age class (or time step) and the last element of the arrays represents the oldest age class (or time step). It should be clear that the position of an element in the arrays represents its age class, in time steps. The dry matter weight of the leaves, which have died during the current time step, has to be. subtracted from the growth of dry matter weight per time step. One array contains thus the net dry matter growth of the leaves per time step, $\Delta$Wn$_{{\rm lv}}$. 
 
-After the correction for leaf senescence, the accumulated leaf area can be established. The
-net dry matter weight of the leaves, $\Delta$Wn$_{{\rm lv,}}$  in the remaining and new leaf classes is
-multiplied with the specific leaf areas (see eq. \ref{eq:5.52}) to get the growth rate of the leaf area
-index of the living leaves per age class. Multiplication with $\Delta$t and summation over the
-classes (eq. \ref{eq:5.53}) yields the total leaf area index. The green area index of the stems and
-the storage organs is added to this amount. The total dry matter weight of living leaves
-can be found in a similar way by using equation \ref{eq:5.49}.
+After the correction for leaf senescence, the accumulated leaf area can be established. The net dry matter weight of the leaves, $\Delta$Wn$_{{\rm lv,}}$  in the remaining and new leaf classes is multiplied with the specific leaf areas (see eq. \ref{eq:5.52}) to get the growth rate of the leaf area index of the living leaves per age class. Multiplication with $\Delta$t and summation over the classes (eq. \ref{eq:5.53}) yields the total leaf area index. The green area index of the stems and the storage organs is added to this amount. The total dry matter weight of living leaves can be found in a similar way by using equation \ref{eq:5.49}. 
 
 \begin{figure}[p]
 	%Fig. 5.8   
@@ -2041,6 +1906,7 @@ stage. This means that $\Delta$W$_{{\rm lv}}$ can be used in stead of the net dr
 growth, $\Delta$Wn$_{{\rm lv}}$.
 
 \subsection{Death of leaves (senescence)}
+\label{sec:LeafSenescence}
 As stated before, leaf senescence is more complicated. Senescence refers to the loss of
 capacity to carry out essential physiological processes and to the loss of living biomass.
 The fundamental processes involve physiological ageing and protein breakdown. These
@@ -2187,7 +2053,7 @@ shifted every time step (daily) to the next class.
 \subsection{Root growth}
 \label{sec:rootgrowth}
 
-Growth of roots in terms of depth is implemented in a straightforward way in WOFOST. 
+Growth of roots in terms of depth is implemented in a simple way in WOFOST. 
 The model assumes that at the start of the crop simulation, the crop has an initial rooting 
 depth which is usually set to 10 cm. After initialization, the crop grows with a fixed daily 
 increase in rooting depth until either a crop-specific maximum depth or a soil-defined maximum 
@@ -2253,160 +2119,51 @@ always equal or higher than the initial rooting depth.
 
 \section{Crop variables}
 
-The crop species are characterized by a set of parameters and functions. In the following
-sub sections the estimated values, derived from experimental data, found in literature will
-be discussed in some detail.
+The crop species are characterized by a set of parameters and functions. In the following subsections the estimated values, derived from experimental data, found in literature will be discussed in some detail.
 
 \subsection{Distribution and absorption of light in the canopy} 
 
-The radiation flux, incident on a leaf, is partly absorbed and partly scattered. Scattering
-consists of reflection and transmission. Species differ in the optical properties of their
-leaves. In the model, a value of 0.20 is used for the scattering coefficient of individual 
-leaves for PAR.
+The radiation flux, incident on a leaf, is partly absorbed and partly scattered. Scattering consists of reflection and transmission. Species differ in the optical properties of their leaves. In the model, a value of 0.20 is used for the scattering coefficient of individual leaves for PAR.
 
-The light distribution within the canopy is characterized by the extinction coefficient ($\kappa$).
-As a reference, the situation is considered where the leaves show a spherical angle
-distribution (i.e. as if they were placed on the surface area of a sphere), and are 
-distributed randomly within the canopy volume. Assuming the above scattering coefficient of
-0.20, the theoretical value of the extinction coefficient for the diffuse radiation flux is
-0.72 (Goudriaan, 1977). Actual values, however, can deviate substantially from this
-theoretical value. Crops with more erect leaves have lower $\kappa$ values, whereas crops with
-more prostrate leaves show higher values of $\kappa$. 
+The light distribution within the canopy is characterized by the extinction coefficient ($\kappa$). As a reference, the situation is considered where the leaves show a spherical angle distribution (i.e. as if they were placed on the surface area of a sphere), and are distributed randomly within the canopy volume. Assuming the above scattering coefficient of 0.20, the theoretical value of the extinction coefficient for the diffuse radiation flux is 0.72 (Goudriaan, 1977). Actual values, however, can deviate substantially from this theoretical value. Crops with more erect leaves (like many cereals) have lower $\kappa$ values, whereas crops with more prostrate leaves show higher values of $\kappa$. 
 
-In the model, a spherical leaf angle
-distribution is assumed. Alternative distributions can easily be implemented using the
-procedure described by Goudriaan (1988). A clustered distribution of leaves increases
-mutual shading, resulting in reduced light absorption and hence a lower value for $\kappa$.
-However, especially in dicotyledons, new leaves are formed, preferably in gaps within the
-canopy, thus increasing the value of $\kappa$. In the model, an actual value for the extinction
-coefficient for diffuse radiation is used. The ratio between this actual value and the above
-theoretical value is used as a cluster factor. The various extinction coefficients and the
-fraction sunlit leaf area are multiplied by this factor.
+In the model, a spherical leaf angle distribution is assumed. Alternative distributions can easily be implemented using the procedure described by Goudriaan (1988). A clustered distribution of leaves increases mutual shading, resulting in reduced light absorption and hence a lower value for $\kappa$. However, especially in dicotyledons, new leaves are formed, preferably in gaps within the canopy, thus increasing the value of $\kappa$. In the model, an actual value for the extinction coefficient for diffuse radiation is used. The ratio between this actual value and the above theoretical value is used as a cluster factor. The various extinction coefficients and the fraction sunlit leaf area are multiplied by this factor.
 
-Light absorption by organs other than leaves results in a calculated extinction coefficient
-which is too high, if the measured extinction is related to leaf area only. If light 
-absorption and assimilation by these organs are important, as for ears and panicles in cereals,
-these processes should be accounted for explicitly in the model; e.g. by treating them as
-light competing assimilators. This is also necessary for other factors, such as foliar
-diseases, that affect the photosynthetic capacity of the leaves and are distributed
-non$-$uniformly over canopy depth.
+Light absorption by organs other than leaves results in a calculated extinction coefficient which is too high, if the measured extinction is related to leaf area only. If light absorption and assimilation by these organs are important, as for ears and panicles in cereals, these processes should be accounted for explicitly in the model; e.g. by treating them as light competing assimilators. This is also necessary for other factors, such as foliar diseases, that affect the photosynthetic capacity of the leaves and are distributed non$-$uniformly over canopy depth.
 
-Typical values of $\kappa$ are 0.4 to 0.7 for monocotyledons and 0.65 to 1.1 for broad leaved
-dicotyledons (Monteith, 1969). The extinction coefficient can be estimated from 
-measurements of PAR above and below a canopy with a known LAI, making sure that PAR is
-measured rather than total global radiation. The extinction coefficient for total radiation is
-about $\frac{2}{3}$ that of PAR. 
+Typical values of $\kappa$ are 0.4 to 0.7 for monocotyledons and 0.65 to 1.1 for broad leaved dicotyledons (Monteith, 1969). The extinction coefficient can be estimated from measurements of PAR above and below a canopy with a known LAI, making sure that PAR is measured rather than total global radiation. The extinction coefficient for total radiation is about $\frac{2}{3}$ that of PAR. 
 
-The extinction coefficient has to be measured under a uniform overcast sky. Direct
-radiation has to be avoided as the solar elevation determines the extinction coefficient for
-direct radiation. In the morning all direct radiation will be absorbed and scattered in the
-top layer of the canopy because of path length. At noon, direct radiation will penetrate
-further in the canopy. If measurements have to be taken at a clear sky, a board can be
-used to shade the light measurement instrument. Otherwise, the average extinction
-coefficient over the day has to be calculated or the value has to be corrected for solar
-elevation. Light extinction can be measured by comparing radiation intensity above and
-below the canopy using a lightbar. From the LAI and the measured light extinction, the
-extinction coefficient for the diffuse flux can be calculated. When global radiation is
-measured the extinction coefficient for the diffuse flux will be about $\frac{2}{3}$ of the extinction
-coefficient calculated for global radiation, because absorption of near the infrared
-radiation by the canopy is less efficient.
+The extinction coefficient has to be measured under a uniform overcast sky. Direct radiation has to be avoided as the solar elevation determines the extinction coefficient for direct radiation. In the morning all direct radiation will be absorbed and scattered in the top layer of the canopy. At noon, direct radiation will penetrate further in the canopy. If measurements have to be taken at a clear sky, a board can be used to shade the light measurement instrument. Otherwise, the average extinction coefficient over the day has to be calculated or the value has to be corrected for solar elevation. Light extinction can be measured by comparing radiation intensity above and below the canopy using a lightbar. From the LAI and the measured light extinction, the extinction coefficient for the diffuse flux can be calculated. When global radiation is measured the extinction coefficient for the diffuse flux will be about $\frac{2}{3}$ of the extinction coefficient calculated for global radiation, because absorption of near the infrared radiation by the canopy is less efficient.
 
-An important factor which may confound the interpretation of measurements, is the light
-absorption by other organs than leaves. In the calculation of the extinction coefficient for
-diffuse light, from measurements, this effect should be accounted for.
+An important factor which may confound the interpretation of measurements, is the light absorption by other organs than leaves. In the calculation of the extinction coefficient for diffuse light, from measurements, this effect should be accounted for.
 
 \subsection{Photosynthesis-light response of individual leaves} 
 
-The response of leaf photosynthesis to light intensity is characterized by its slope at low
-light intensity ($\epsilon$) and its maximum rate at light saturation (A$_{{\rm m}}$). With respect to the
-photosynthetic pathway, three groups of species can be identified: C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species and
-CAM plants. Lists of C$_{{\rm 4}}$ species have been published by Downton (1975) and
-Raghavendra \& Das (1978).   
+The response of leaf photosynthesis to light intensity is characterized by its slope at low light intensity ($\epsilon$) and its maximum rate at light saturation (A$_{{\rm m}}$). With respect to the photosynthetic pathway, three groups of species can be identified: C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species and CAM plants. Lists of C$_{{\rm 4}}$ species have been published by Downton (1975) and Raghavendra \& Das (1978).   
 
-At a leaf temperature of 20\degrees C, both C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species have an initial 
-light use efficiency of approximately 12.5 $\mu$g CO$_{{\rm 2}}$ J$^{{\rm -1}}$ absorbed PAR or 0.45 kg 
-CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ (J m$^{{\rm 2}}$ S$^{{\rm -}{1}}$)$^{{\rm -}{1}}$
-(Ehleringer \& Pearcy, 1983). In C$_{{\rm 3}}$ species, $\epsilon$ decreases with increasing temperature due
-to accelerated photo-respiration. This temperature effect is relatively small: $\epsilon$ changes by
-about 1\% with each change of 1\degrees C in temperature (Farquhar {\it et al.}, 1980; Ehleringer,
-1978; Leverenz \& \"{O}quist, 1987). In C$_{{\rm 4}}$ species, $\epsilon$ is not affected by temperature because
-photo-respiration is suppressed in the C$_{{\rm 4}}$ pathway. 
+At a leaf temperature of 20\degrees C, both C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species have an initial light use efficiency of approximately 12.5 $\mu$g CO$_{{\rm 2}}$ J$^{{\rm -1}}$ absorbed PAR or 0.45 kg CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ (J m$^{{\rm 2}}$ S$^{{\rm -}{1}}$)$^{{\rm -}{1}}$ (Ehleringer \& Pearcy, 1983). In C$_{{\rm 3}}$ species, $\epsilon$ decreases with increasing temperature due to accelerated photo-respiration. This temperature effect is relatively small: $\epsilon$ changes by about 1\% with each change of 1\degrees C in temperature (Farquhar {\it et al.}, 1980; Ehleringer, 1978; Leverenz \& \"{O}quist, 1987). In C$_{{\rm 4}}$ species, $\epsilon$ is not affected by temperature because photo-respiration is suppressed in the C$_{{\rm 4}}$ pathway. 
 
-Among both C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species, there
-is hardly any variation in (Ehleringer \& Pearcy, 1983). However, when $\epsilon$ is expressed per
-unit of incident PAR, instead of per unit of absorbed PAR, apparent differences may
-occur, due to differences in the absorption coefficient of the leaves (Hunt {\it et al.}, 1985).
-Yellowing of leaves results in increased reflection and transmission and, therefore, in an
-apparent decrease of $\epsilon$.  
+Among both C$_{{\rm 3}}$ and C$_{{\rm 4}}$ species, there is hardly any variation in (Ehleringer \& Pearcy, 1983) $\epsilon$. However, when $\epsilon$ is expressed per unit of incident PAR, instead of per unit of absorbed PAR, differences may occur, due to differences in the absorption coefficient of the leaves (Hunt {\it et al.}, 1985). Yellowing of leaves results in increased reflection and transmission and, therefore, in an decrease of $\epsilon$.  
 
-Measured values of the gross assimilation rate of leaves at light saturation (A$_{{\rm m}}$) show a
-large variation. The main sources of variation are differences in measurement conditions
-of temperature and ambient CO$_{{\rm 2}}$ concentration, differences in physiological and 
-anatomical properties of the leaves as a result of differences in leaf age and pre$-$treatment, and
-variation among species and cultivars.
+Measured values of the gross assimilation rate of leaves at light saturation (A$_{{\rm m}}$) show a large variation. The main sources of variation are differences in measurement conditions of temperature and ambient CO$_{{\rm 2}}$ concentration, differences in physiological and anatomical properties of the leaves as a result of differences in leaf age and pre$-$treatment, and variation among species and cultivars.
 
-The influence of temperature on the rate of leaf photosynthesis is described in the model
-by multiplying the value of A$_{{\rm m}}$ by a temperature$-$dependent factor. The relationship
-between temperature and Am is based on Versteeg \& van Keulen (1986). Various
-reaction types are distinguished according to crop species and habitat.
+The influence of temperature on the rate of leaf photosynthesis is described in the model by multiplying the value of A$_{{\rm m}}$ by a temperature$-$dependent factor. The relationship between temperature and Am is based on Versteeg \& van Keulen (1986). Various reaction types are distinguished according to crop species and habitat.
 
-The photosynthetic capacity of the leaves is affected by the preceding conditions of
-radiation and temperature to which they were exposed: leaves adapt their photosynthetic
-capacity to the environment. Therefore, A$_{{\rm m}}$ shows a seasonal course, which correlates
-with the time course of radiation and temperature (Parsons \& Robson, 1981). This
-adaptation may be mimicked by using a seven$-$day running average of the value of A$_{{\rm m}}$
-which has been adjusted for the environmental conditions (Schapendonk \& Gaastra, 1984;
-Acock {\it et al.}, 1978). A consequence of this adaptation is that the photosynthetic 
-characteristics of leaves of plants grown in climate rooms, are not representative for plants grown
-in the field.
+The photosynthetic capacity of the leaves is affected by the preceding conditions of radiation and temperature to which they were exposed: leaves adapt their photosynthetic capacity to the environment. Therefore, A$_{{\rm m}}$ shows a seasonal course, which correlates with the time course of radiation and temperature (Parsons \& Robson, 1981). This adaptation may be mimicked by using a seven$-$day running average of the value of A$_{{\rm m}}$ which has been adjusted for the environmental conditions (Schapendonk \& Gaastra, 1984; Acock {\it et al.}, 1978). A consequence of this adaptation is that the photosynthetic  characteristics of leaves of plants grown in climate rooms, are not representative for plants grown in the field.
 
-The photosynthetic capacity of a leaf is also affected by its age: A$_{{\rm m}}$ reaches a maximum
-shortly after full expansion of the leaf, followed by a gradual decline with ageing
-(Rawson {\it et al.}, 1983; Dwyer \& Stewart, 1986). Differences in photosynthetic capacity of
-the leaves are closely related to their nitrogen content, whether these variations are due to
-age, growing conditions or fertilizer application (van Keulen \& Seligman, 1987). Leaves 
-lower in the canopy have a lower photosynthetic capacity because they are older and are
-adapted to lower radiation levels (Acock {\it et al.}, 1978; Williams, 1985). They also have
-lower nitrogen concentrations. The value of A$_{{\rm m}}$ used in the model, refers to the
-photosynthetic capacity of full$-$grown leaves at the top of the canopy, as these leaves
-absorb most of the radiation. Effects of canopy senescence are introduced by a multiplication 
-factor which is a function of development stage.
+The photosynthetic capacity of a leaf is also affected by its age: A$_{{\rm m}}$ reaches a maximum shortly after full expansion of the leaf, followed by a gradual decline with ageing (Rawson {\it et al.}, 1983; Dwyer \& Stewart, 1986). Differences in photosynthetic capacity of the leaves are closely related to their nitrogen content, whether these variations are due to age, growing conditions or fertilizer application (van Keulen \& Seligman, 1987). Leaves lower in the canopy have a lower photosynthetic capacity because they are older and are adapted to lower radiation levels (Acock {\it et al.}, 1978; Williams, 1985). They also have lower nitrogen concentrations. The value of A$_{{\rm m}}$ used in the model, refers to the photosynthetic capacity of full$-$grown leaves at the top of the canopy, as these leaves absorb most of the radiation. Effects of canopy senescence are introduced by a multiplication  factor which is a function of development stage.
 
-The photosynthetic capacity of leaves varies with crop species and cultivar. The coefficient of
-variation in A$_{{\rm m}}$ among genotypes within a species is of the order of 5$-$10\%
-(Spitters \& Kramer, 1986). Species can be grouped according to C$_{{\rm 3}}$ and C$_{{\rm 4}}$ types.
-Characteristic values range from 15$-$50 kg CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ 
-for C$_{{\rm 3}}$ species and from 40-90
-kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ for C$_{{\rm 4}}$ species, depending on leaf 
-N concentration and temperature (Spitters {\it et al.}, 1986). Other values mentioned, 
-range from 10$-$50 kg CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ for
-C$_{{\rm 3}}$ species and from 10-90 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ 
-for C$_{{\rm 4}}$ species (Goudriaan, 1982; van Keulen \&
-Seligman, 1987). Species from ruderal habitats show higher values than species from
-shaded habitats. In the model, estimates of A$_{{\rm m}}$ must be used, which are found by fitting
-the exponential function [equation \ref{eq:5.23}] to data of gross photosynthesis of individual
-leaves. Such estimates may deviate from the measured values of photosynthetic efficiency
-at low light and photosynthesis at light saturation. If no firmly based value of A$_{{\rm m}}$ is
-available, a value of 40 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -}{1}}$ for C$_{{\rm 3}}$ 
-species and 70 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ for C$_{{\rm 4}}$
+The photosynthetic capacity of leaves varies with crop species and cultivar. The coefficient of variation in A$_{{\rm m}}$ among genotypes within a species is of the order of 5$-$10\% (Spitters \& Kramer, 1986). Species can be grouped according to C$_{{\rm 3}}$ and C$_{{\rm 4}}$ types. Characteristic values range from 15$-$50 kg CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ for C$_{{\rm 3}}$ species and from 40-90
+kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ for C$_{{\rm 4}}$ species, depending on leaf N concentration and temperature (Spitters {\it et al.}, 1986). Other values mentioned, range from 10$-$50 kg CO$_{{\rm 2}}$ ha$^{{\rm -}{1}}$ leaf h$^{{\rm -}{1}}$ for C$_{{\rm 3}}$ species and from 10-90 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ for C$_{{\rm 4}}$ species (Goudriaan, 1982; van Keulen \&
+Seligman, 1987). 
+
+Species from ruderal habitats show higher values than species from shaded habitats. In the model, estimates of A$_{{\rm m}}$ must be used, which are found by fitting the exponential function [equation \ref{eq:5.23}] to data of gross photosynthesis of individual leaves. Such estimates may deviate from the measured values of photosynthetic efficiency at low light and photosynthesis at light saturation. If no firmly based value of A$_{{\rm m}}$ is available, a value of 40 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -}{1}}$ for C$_{{\rm 3}}$ species and 70 kg CO$_{{\rm 2}}$ ha$^{{\rm -1}}$ h$^{{\rm -1}}$ for C$_{{\rm 4}}$
 species is, in general, a reasonable estimate.
 
 \subsection{Respiration} 
 
-Respiration is usually measured as CO$_{{\rm 2}}$ evolution in the absence of light energy. This
-dark respiration can be partitioned into growth and maintenance respiration; estimation
-procedures being reviewed by Amthor (1984). Standard values for maintenance coefficients are 
-0.03 for leaves, 0.015 for stems and 0.01 for roots (Spitters {\it et al.}, 1989). For
-tropical crops lower values are used: 0.02 for the leaves and 0.01 for the other plant
-organs (Penning de Vries {\it et al.}, 1989). As mentioned previously, these coefficients are
-affected by temperature, nitrogen content and mineral content of the plant tissue, and by
-the metabolic activity of the crop.
+Respiration is usually measured as CO$_{{\rm 2}}$ evolution in the absence of light energy. This dark respiration can be partitioned into growth and maintenance respiration; estimation procedures being reviewed by Amthor (1984). Typical values for maintenance coefficients are 0.03 for leaves, 0.015 for stems and 0.01 for roots (Spitters {\it et al.}, 1989). For tropical crops lower values are used: 0.02 for the leaves and 0.01 for the other plant organs (Penning de Vries {\it et al.}, 1989). As mentioned previously, these coefficients are affected by temperature, nitrogen content and mineral content of the plant tissue, and by the metabolic activity of the crop.
 
-Measured rates of dark respiration of full$-$grown leaves, showed a large variation among
-species and among cultivars (M.J. de Kock, AB-DLO, Wageningen, unpubl.). The
-maintenance coefficients applied in the model are not based on conclusive evidence. This
-introduces a significant uncertainty in simulating the rate of crop growth, especially when
-the standing biomass is large compared to the current rate of photosynthesis, as at the end
-of the growth period.   
+Measured rates of dark respiration of full$-$grown leaves, showed a large variation among species and among cultivars (M.J. de Kock, AB-DLO, Wageningen, unpubl.). The maintenance coefficients applied in the model are not based on conclusive evidence. This introduces a significant uncertainty in simulating the rate of crop growth, especially when the standing biomass is large compared to the current rate of photosynthesis, as at the end of the growth period.   
 
 
